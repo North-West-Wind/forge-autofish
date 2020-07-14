@@ -50,7 +50,7 @@ public class AutoFishHandler {
         double x = vector.getX();
         double z = vector.getZ();
         double y = vector.getY();
-        if(y < -0.2 && e.player.fishingBobber.isInWater() && x == 0 && z == 0) {
+        if(y < -0.1 && e.player.fishingBobber.isInWater() && x == 0 && z == 0) {
             ClientPlayNetHandler nethandler = Minecraft.getInstance().getConnection();
             if(nethandler != null) {
                 nethandler.sendPacket(new CPlayerTryUseItemPacket(Hand.MAIN_HAND));
