@@ -14,13 +14,13 @@ issueTrackerURL="https://github.com/North-West-Wind/forge-autofish/issues" #opti
 # The modid of the mod
 modId="forgeautofish" #mandatory
 # The version number of the mod - there's a few well known ${} variables useable here or just hardcode it
-version="1.0.1" #mandatory
+version="1.0.3" #mandatory
  # A display name for the mod
 displayName="AutoFish for Forge" #mandatory
 # A URL to query for updates for this mod. See the JSON update specification <here>
 updateJSONURL="https://north-west-wind.github.io/update.json" #optional
 # A URL for the "homepage" for this mod, displayed in the mod UI
-displayURL="https://north-west-wind.github.io/" #optional
+displayURL="https://github.com/North-West-Wind/forge-autofish/" #optional
 # A file name (in the root of the mod JAR) containing a logo for display
 logoFile="forgeautofish.png" #optional
 # A text field displayed in the mod UI

@@ -3,7 +3,6 @@ package com.northwestwind.forgeautofish.handler;
 import com.northwestwind.forgeautofish.AutoFish;
 import com.northwestwind.forgeautofish.keybind.KeyBinds;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.PlayerController;
 import net.minecraft.client.network.play.ClientPlayNetHandler;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.FishingRodItem;
