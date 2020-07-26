@@ -3,13 +3,12 @@ package com.northwestwind.forgeautofish.handler;
 import com.northwestwind.forgeautofish.AutoFish;
 import com.northwestwind.forgeautofish.keybind.KeyBinds;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.PlayerController;
 import net.minecraft.client.network.play.ClientPlayNetHandler;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.FishingRodItem;
 import net.minecraft.network.play.client.CPlayerTryUseItemPacket;
 import net.minecraft.util.Hand;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -46,7 +45,7 @@ public class AutoFishHandler {
             return;
         }
         if(fished) return;
-        Vector3d vector = e.player.fishingBobber.getMotion();
+        Vec3d vector = e.player.fishingBobber.getMotion();
         double x = vector.getX();
         double z = vector.getZ();
         double y = vector.getY();
