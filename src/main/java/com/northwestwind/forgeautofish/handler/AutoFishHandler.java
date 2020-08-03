@@ -9,30 +9,34 @@ import net.minecraft.entity.projectile.EntityFishHook;
 import net.minecraft.item.ItemFishingRod;
 import net.minecraft.network.play.client.CPacketPlayerTryUseItem;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.gameevent.InputEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.InputEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import org.apache.logging.log4j.LogManager;
 
-@Mod.EventBusSubscriber(modid = AutoFish.MODID, value = Side.CLIENT)
 public class AutoFishHandler {
 
     private boolean autofishenabled;
 
     @SubscribeEvent
+    @SideOnly(Side.CLIENT)
     public void onKeyInput(InputEvent.KeyInputEvent e) {
         if(KeyBinds.autofish.isPressed()) {
             autofishenabled = !autofishenabled;
-            Minecraft.getMinecraft().player.sendStatusMessage(new TextComponentTranslation("toggle.forgeautofish", (autofishenabled ? "\u00A7aEnabled" : "\u00A7cDisabled")), true);
+            Minecraft.getMinecraft().player.sendStatusMessage(new TextComponentTranslation("toggle.forgeautofish", (autofishenabled ? "\u00a7aEnabled" : "\u00a7cDisabled")), true);
         }
     }
 
     private boolean fished = false;
 
     @SubscribeEvent
+    @SideOnly(Side.CLIENT)
     public void onPlayerTick(TickEvent.PlayerTickEvent e) throws InterruptedException {
         if(!autofishenabled) return;
         if(!(e.player.getHeldItemMainhand().getItem() instanceof ItemFishingRod)) {
@@ -46,7 +50,7 @@ public class AutoFishHandler {
         double x = fishingHook.motionX;
         double z = fishingHook.motionZ;
         double y =fishingHook.motionY;
-        if(y < -0.1 && e.player.fishEntity.isInWater() && x == 0 && z == 0) {
+        if(y < -0.075 && e.player.fishEntity.isInWater() && x == 0 && z == 0) {
             NetHandlerPlayClient nethandler = Minecraft.getMinecraft().getConnection();
             if(nethandler != null) {
                 nethandler.sendPacket(new CPacketPlayerTryUseItem(EnumHand.MAIN_HAND));
