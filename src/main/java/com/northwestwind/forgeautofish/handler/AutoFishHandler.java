@@ -39,6 +39,7 @@ public class AutoFishHandler {
     @SideOnly(Side.CLIENT)
     public void onPlayerTick(final TickEvent.PlayerTickEvent e) throws InterruptedException {
         if(!autofishenabled) return;
+        if(!e.player.getUniqueID().equals(Minecraft.getMinecraft().player.getUniqueID())) return;
         if(!(e.player.getHeldItemMainhand().getItem() instanceof ItemFishingRod)) {
             return;
         }
