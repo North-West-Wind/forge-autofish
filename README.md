@@ -16,6 +16,10 @@ Thanks for using the mod!
 1.14.4
 1.13.2
 1.12.2
+1.11.2
+1.10.2
+1.9.4
+1.8.9
 
 ## What does it do?
 This mod allows you to AFK fish (as long as the server allows AFK) anywhere. Can I use it in my singleplayer world? Yes! Can I use it on servers? Yes! The mod is completely client-side! You just need a Forge client on your computer, put this mod into the "mods" folder and you finished the setup! How easy it is!
