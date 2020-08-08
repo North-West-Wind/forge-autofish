@@ -39,6 +39,7 @@ public class AutoFishHandler {
     @SideOnly(Side.CLIENT)
     public void onPlayerTick(TickEvent.PlayerTickEvent e) throws InterruptedException {
         if(!autofishenabled) return;
+        if(!e.player.getUniqueID().equals(Minecraft.getMinecraft().player.getUniqueID())) return;
         if(!(e.player.getHeldItemMainhand().getItem() instanceof ItemFishingRod)) {
             return;
         }
@@ -50,7 +51,7 @@ public class AutoFishHandler {
         double x = fishingHook.motionX;
         double z = fishingHook.motionZ;
         double y =fishingHook.motionY;
-        if(y < -0.075 && e.player.fishEntity.isInWater() && x == 0 && z == 0) {
+        if(y < -0.05 && e.player.fishEntity.isInWater() && x == 0 && z == 0) {
             NetHandlerPlayClient nethandler = Minecraft.getMinecraft().getConnection();
             if(nethandler != null) {
                 nethandler.sendPacket(new CPacketPlayerTryUseItem(EnumHand.MAIN_HAND));
