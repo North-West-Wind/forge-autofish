@@ -36,5 +36,5 @@ When the mod is enabled, it will look for the bobber of the player. You may thin
 However, I found a way simplier method to know if is catch a fish...\*drumroll\* Motion. Since, the bobber is an entity, we can track its motion. As we all know, the bobber sinks into the water when it catches a fish. By tracking the vertical motion of the bobber, we can know when it catches a fish. It is simple as that!
 
 ## Future Plans
-1. Porting the mod to older versions.
+1. Port the mod to older versions.
 2. A GUI for whatever reason.
