@@ -16,6 +16,10 @@ Thanks for using the mod!
 1.14.4
 1.13.2
 1.12.2
+1.11.2
+1.10.2
+1.9.4
+1.8.9
 
 ## What does it do?
 This mod allows you to AFK fish (as long as the server allows AFK) anywhere. Can I use it in my singleplayer world? Yes! Can I use it on servers? Yes! The mod is completely client-side! You just need a Forge client on your computer, put this mod into the "mods" folder and you finished the setup! How easy it is!
@@ -36,5 +40,5 @@ When the mod is enabled, it will look for the bobber of the player. You may thin
 However, I found a way simplier method to know if is catch a fish...\*drumroll\* Motion. Since, the bobber is an entity, we can track its motion. As we all know, the bobber sinks into the water when it catches a fish. By tracking the vertical motion of the bobber, we can know when it catches a fish. It is simple as that!
 
 ## Future Plans
-1. Port the mod to older versions.
+1. Porting the mod to older versions.
 2. A GUI for whatever reason.
