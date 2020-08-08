@@ -29,7 +29,7 @@ public class AutoFishHandler {
     public void onKeyInput(InputEvent.KeyInputEvent e) {
         if(KeyBinds.autofish.isPressed()) {
             autofishenabled = !autofishenabled;
-            Minecraft.getMinecraft().player.sendStatusMessage(new TextComponentTranslation("toggle.forgeautofish", (autofishenabled ? "\u00a7aEnabled" : "\u00a7cDisabled")), true);
+            Minecraft.getMinecraft().thePlayer.addChatMessage(new TextComponentTranslation("toggle.forgeautofish", (autofishenabled ? "\u00a7aEnabled" : "\u00a7cDisabled")));
         }
     }
 
@@ -39,7 +39,7 @@ public class AutoFishHandler {
     @SideOnly(Side.CLIENT)
     public void onPlayerTick(final TickEvent.PlayerTickEvent e) throws InterruptedException {
         if(!autofishenabled) return;
-        if(!(e.player.getHeldItemMainhand().getItem() instanceof ItemFishingRod)) {
+        if(e.player.getHeldItemMainhand() == null || !(e.player.getHeldItemMainhand().getItem() instanceof ItemFishingRod)) {
             return;
         }
         if(e.player.fishEntity == null) {
@@ -50,18 +50,18 @@ public class AutoFishHandler {
         double x = fishingHook.motionX;
         double z = fishingHook.motionZ;
         double y =fishingHook.motionY;
-        if(y < -0.05 && e.player.fishEntity.isInWater() && x == 0 && z == 0) {
+        if(y < -0.05 && x == 0 && z == 0) {
             final NetHandlerPlayClient nethandler = Minecraft.getMinecraft().getConnection();
             if(nethandler != null) {
                 nethandler.sendPacket(new CPacketPlayerTryUseItem(EnumHand.MAIN_HAND));
             } else {
-                rightClick(e.player.world, e.player, EnumHand.MAIN_HAND);
+                rightClick(e.player.worldObj, e.player, EnumHand.MAIN_HAND);
             }
             if(!fished) {
                 fished = true;
                 startTimer();
             }
-            if(e.player.getHeldItemMainhand().isEmpty()) return;
+            if(e.player.getHeldItemMainhand() == null) return;
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -70,7 +70,7 @@ public class AutoFishHandler {
                         if(nethandler != null) {
                             nethandler.sendPacket(new CPacketPlayerTryUseItem(EnumHand.MAIN_HAND));
                         } else {
-                            rightClick(e.player.world, e.player, EnumHand.MAIN_HAND);
+                            rightClick(e.player.worldObj, e.player, EnumHand.MAIN_HAND);
                         }
                     } catch (InterruptedException ex) {
                         ex.printStackTrace();
