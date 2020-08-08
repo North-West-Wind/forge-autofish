@@ -7,10 +7,8 @@ import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityFishHook;
 import net.minecraft.item.ItemFishingRod;
-import net.minecraft.network.play.client.CPacketPlayerTryUseItem;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
@@ -29,7 +27,7 @@ public class AutoFishHandler {
     public void onKeyInput(InputEvent.KeyInputEvent e) {
         if(KeyBinds.autofish.isPressed()) {
             autofishenabled = !autofishenabled;
-            Minecraft.getMinecraft().thePlayer.addChatMessage(new TextComponentTranslation("toggle.forgeautofish", (autofishenabled ? "\u00a7aEnabled" : "\u00a7cDisabled")));
+            Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentTranslation("toggle.forgeautofish", (autofishenabled ? "\u00a7aEnabled" : "\u00a7cDisabled")));
         }
     }
 
@@ -40,7 +38,7 @@ public class AutoFishHandler {
     public void onPlayerTick(final TickEvent.PlayerTickEvent e) throws InterruptedException {
         if(!autofishenabled) return;
         if(!e.player.getUniqueID().equals(Minecraft.getMinecraft().thePlayer.getUniqueID())) return;
-        if(e.player.getHeldItemMainhand() == null || !(e.player.getHeldItemMainhand().getItem() instanceof ItemFishingRod)) {
+        if(e.player.getHeldItem() == null || !(e.player.getHeldItem().getItem() instanceof ItemFishingRod)) {
             return;
         }
         if(e.player.fishEntity == null) {
@@ -52,26 +50,26 @@ public class AutoFishHandler {
         double z = fishingHook.motionZ;
         double y =fishingHook.motionY;
         if(y < -0.05 && x == 0 && z == 0) {
-            final NetHandlerPlayClient nethandler = Minecraft.getMinecraft().getConnection();
+            final NetHandlerPlayClient nethandler = Minecraft.getMinecraft().getNetHandler();
             if(nethandler != null) {
-                nethandler.sendPacket(new CPacketPlayerTryUseItem(EnumHand.MAIN_HAND));
+                nethandler.addToSendQueue(new C08PacketPlayerBlockPlacement(e.player.getHeldItem()));
             } else {
-                rightClick(e.player.worldObj, e.player, EnumHand.MAIN_HAND);
+                rightClick(e.player.worldObj, e.player);
             }
             if(!fished) {
                 fished = true;
                 startTimer();
             }
-            if(e.player.getHeldItemMainhand() == null) return;
+            if(e.player.getHeldItem() == null) return;
             new Thread(new Runnable() {
                 @Override
                 public void run() {
                     try {
                         Thread.sleep(500);
                         if(nethandler != null) {
-                            nethandler.sendPacket(new CPacketPlayerTryUseItem(EnumHand.MAIN_HAND));
+                            nethandler.addToSendQueue(new C08PacketPlayerBlockPlacement(e.player.getHeldItem()));
                         } else {
-                            rightClick(e.player.worldObj, e.player, EnumHand.MAIN_HAND);
+                            rightClick(e.player.worldObj, e.player);
                         }
                     } catch (InterruptedException ex) {
                         ex.printStackTrace();
@@ -95,7 +93,7 @@ public class AutoFishHandler {
         }).start();
     }
 
-    private void rightClick(World world, EntityPlayer player, EnumHand hand) {
-        player.getHeldItemMainhand().useItemRightClick(world, player, hand);
+    private void rightClick(World world, EntityPlayer player) {
+        player.getHeldItem().useItemRightClick(world, player);
     }
 }

@@ -4,7 +4,7 @@
   "name": "AutoFish for Forge",
   "description": "I like playing survival, but fishing is a boring activity...\nTherefore, I made this mod!\nNow you can AFK Fish like no one else!\n\nNote that this is my first mod, so there might be bugs.",
   "version": "1.0.4",
-  "mcversion": "1.9.4",
+  "mcversion": "1.8.9",
   "url": "https://github.com/North-West-Wind/forge-autofish/",
   "updateUrl": "https://north-west-wind.github.io/update.json",
   "authorList": ["NorthWestWind"],
