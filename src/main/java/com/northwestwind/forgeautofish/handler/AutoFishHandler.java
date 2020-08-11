@@ -28,7 +28,9 @@ public class AutoFishHandler {
     public void onKeyInput(InputEvent.KeyInputEvent e) {
         if(KeyBinds.autofish.isPressed()) {
             autofishenabled = !autofishenabled;
-            Minecraft.getInstance().player.sendStatusMessage(new TranslationTextComponent("toggle.forgeautofish", (autofishenabled ? "\u00A7aEnabled" : "\u00A7cDisabled")), true);
+            if (Minecraft.getInstance().player != null) {
+                Minecraft.getInstance().player.sendStatusMessage(new TranslationTextComponent("toggle.forgeautofish", (autofishenabled ? "\u00A7aEnabled" : "\u00A7cDisabled")), true);
+            }
         }
     }
 
@@ -38,7 +40,8 @@ public class AutoFishHandler {
     @OnlyIn(Dist.CLIENT)
     public void onPlayerTick(TickEvent.PlayerTickEvent e) throws InterruptedException {
         if(!autofishenabled) return;
-        if(!e.player.getUniqueID().equals(Minecraft.getInstance().player.getUniqueID())) return;
+        if (Minecraft.getInstance().player != null && !e.player.getUniqueID().equals(Minecraft.getInstance().player.getUniqueID()))
+            return;
         if(!(e.player.getHeldItemMainhand().getItem() instanceof FishingRodItem)) {
             return;
         }
