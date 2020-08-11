@@ -42,9 +42,15 @@ public class AutoFishHandler {
         if(!autofishenabled) return;
         if (Minecraft.getInstance().player != null && !e.player.getUniqueID().equals(Minecraft.getInstance().player.getUniqueID()))
             return;
-        if(!(e.player.getHeldItemMainhand().getItem() instanceof FishingRodItem)) {
-            return;
+
+        Hand handWithFishingRod;
+        if(e.player.getHeldItemMainhand().getItem() instanceof FishingRodItem) {
+            handWithFishingRod = Hand.MAIN_HAND;
         }
+        else if(e.player.getHeldItemOffhand().getItem() instanceof FishingRodItem){
+            handWithFishingRod = Hand.OFF_HAND;
+        }
+        else return;
         if(e.player.fishingBobber == null) {
             return;
         }
@@ -56,22 +62,22 @@ public class AutoFishHandler {
         if(y < -0.05 && e.player.fishingBobber.isInWater() && x == 0 && z == 0) {
             ClientPlayNetHandler nethandler = Minecraft.getInstance().getConnection();
             if(nethandler != null) {
-                nethandler.sendPacket(new CPlayerTryUseItemPacket(Hand.MAIN_HAND));
+                nethandler.sendPacket(new CPlayerTryUseItemPacket(handWithFishingRod));
             } else {
-                rightClick(e.player.world, e.player, Hand.MAIN_HAND);
+                click(e.player.world, e.player, handWithFishingRod);
             }
             if(!fished) {
                 fished = true;
                 startTimer();
             }
-            if(e.player.getHeldItemMainhand().isEmpty()) return;
+            if(e.player.getHeldItem(handWithFishingRod).isEmpty()) return;
             new Thread(() -> {
                 try {
                     Thread.sleep(500);
                     if(nethandler != null) {
-                        nethandler.sendPacket(new CPlayerTryUseItemPacket(Hand.MAIN_HAND));
+                        nethandler.sendPacket(new CPlayerTryUseItemPacket(handWithFishingRod));
                     } else {
-                        rightClick(e.player.world, e.player, Hand.MAIN_HAND);
+                        click(e.player.world, e.player, handWithFishingRod);
                     }
                 } catch (InterruptedException ex) {
                     ex.printStackTrace();
@@ -91,7 +97,7 @@ public class AutoFishHandler {
         }).start();
     }
 
-    private void rightClick(World world, PlayerEntity player, Hand hand) {
-        player.getHeldItemMainhand().useItemRightClick(world, player, hand);
+    private void click(World world, PlayerEntity player, Hand hand) {
+        player.getHeldItem(hand).useItemRightClick(world, player, hand);
     }
 }
