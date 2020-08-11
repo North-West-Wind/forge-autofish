@@ -65,34 +65,28 @@ public class AutoFishHandler {
                 startTimer();
             }
             if(e.player.getHeldItemMainhand().isEmpty()) return;
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        Thread.sleep(500);
-                        if(nethandler != null) {
-                            nethandler.sendPacket(new CPlayerTryUseItemPacket(Hand.MAIN_HAND));
-                        } else {
-                            rightClick(e.player.world, e.player, Hand.MAIN_HAND);
-                        }
-                    } catch (InterruptedException ex) {
-                        ex.printStackTrace();
+            new Thread(() -> {
+                try {
+                    Thread.sleep(500);
+                    if(nethandler != null) {
+                        nethandler.sendPacket(new CPlayerTryUseItemPacket(Hand.MAIN_HAND));
+                    } else {
+                        rightClick(e.player.world, e.player, Hand.MAIN_HAND);
                     }
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
                 }
             }).start();
         }
     }
 
     private void startTimer() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(1000);
-                    fished = false;
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+        new Thread(() -> {
+            try {
+                Thread.sleep(1000);
+                fished = false;
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }).start();
     }
