@@ -38,7 +38,7 @@ public class AutoFishHandler {
 
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
-    public void onPlayerTick(TickEvent.PlayerTickEvent e) throws InterruptedException {
+    public void onPlayerTick(TickEvent.PlayerTickEvent e) {
         if(!autofishenabled) return;
         if (Minecraft.getInstance().player != null && !e.player.getUniqueID().equals(Minecraft.getInstance().player.getUniqueID()))
             return;
