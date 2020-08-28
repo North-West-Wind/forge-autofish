@@ -82,7 +82,7 @@ public class AutoFishHandler {
             if(e.player.getHeldItem(handWithFishingRod).isEmpty()) return;
             ItemStack fishingRod = e.player.getHeldItem(handWithFishingRod);
             if(fishingRod.isEmpty()) return;
-            if(fishingRod.getMaxDamage() - fishingRod.getDamage() < 3 && !e.player.isCreative()) {
+            if(fishingRod.getMaxDamage() - fishingRod.getDamage() < 3 && !e.player.isCreative() && rodprotectenabled) {
                 Minecraft.getInstance().player.sendStatusMessage(new TranslationTextComponent("toggle.forgeautofish", "\u00A7cDisabled"), true);
                 autofishenabled = false;
                 return;
