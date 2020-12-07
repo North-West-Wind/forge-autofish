@@ -2,15 +2,18 @@
   "homepage": "https://github.com/North-West-Wind/forge-autofish/",
   "1.16.4": {
     "1.0.6": "1.16.4 Release",
-    "1.1.0": "Customizable Recast Delay"
+    "1.1.0": "Customizable Recast Delay",
+    "1.1.1": "Fixed Loader Version for 1.16.4"
   },
   "1.16.3": {
     "1.0.5": "1.16.3 Release",
-    "1.1.0": "Customizable Recast Delay"
+    "1.1.0": "Customizable Recast Delay",
+    "1.1.1": "Fixed Loader Version for 1.16.4"
   },
   "1.16.2": {
     "1.0.5": "1.16.2 Release",
-    "1.1.0": "Customizable Recast Delay"
+    "1.1.0": "Customizable Recast Delay",
+    "1.1.1": "Fixed Loader Version for 1.16.4"
   },
   "1.16.1": {
     "1.0.0": "Initial Release!",
@@ -19,7 +22,8 @@
     "1.0.3": "Homepage Link Update",
     "1.0.4": "Accuracy Update #2 + Fixed Grammatical Mistake in Description",
     "1.0.5": "Offhand Support + Fishing Rod Protection",
-    "1.1.0": "Customizable Recast Delay"
+    "1.1.0": "Customizable Recast Delay",
+    "1.1.1": "Fixed Loader Version for 1.16.4"
   },
   "1.15.2": {
     "1.0.2": "Optimization + 1.15.2 Release",
@@ -51,13 +55,13 @@
     "1.0.4": "1.8.9 Release"
   },
   "promos": {
-    "1.16.4-latest": "1.1.0",
-    "1.16.4-recommended": "1.1.0",
-    "1.16.3-latest": "1.1.0",
+    "1.16.4-latest": "1.1.1",
+    "1.16.4-recommended": "1.1.1",
+    "1.16.3-latest": "1.1.1",
     "1.16.3-recommended": "1.1.0",
-    "1.16.2-latest": "1.1.0",
+    "1.16.2-latest": "1.1.1",
     "1.16.2-recommended": "1.1.0",
-    "1.16.1-latest": "1.1.0",
+    "1.16.1-latest": "1.1.1",
     "1.16.1-recommended": "1.1.0",
     "1.15.2-latest": "1.0.4",
     "1.15.2-recommended": "1.0.4",
