@@ -5,7 +5,7 @@ license="All rights reserved"
 
 [[mods]]
 modId="forgeautofish"
-version="1.1.1-1.16.x"
+version="1.1.2-1.16.x"
 displayName="AutoFish for Forge"
 updateJSONURL="https://raw.githubusercontent.com/North-West-Wind/forge-autofish/master/update.json" #optional
 displayURL="https://github.com/North-West-Wind/forge-autofish/"

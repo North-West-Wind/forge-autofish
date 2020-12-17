@@ -73,7 +73,7 @@ public class AutoFishHandler {
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
     public void onPlayerTick(TickEvent.PlayerTickEvent e) {
-        if(!autofishenabled || e.player.isSpectator() || (Minecraft.getInstance().player != null && !e.player.getUniqueID().equals(Minecraft.getInstance().player.getUniqueID())) || e.player.fishingBobber == null || fished) return;
+        if(!autofishenabled || e.player == null || Minecraft.getInstance().player == null || e.player.isSpectator() || !e.player.getUniqueID().equals(Minecraft.getInstance().player.getUniqueID()) || e.player.fishingBobber == null || fished) return;
         Hand handWithFishingRod;
         if(e.player.getHeldItemMainhand().getItem() instanceof FishingRodItem) handWithFishingRod = Hand.MAIN_HAND;
         else if(e.player.getHeldItemOffhand().getItem() instanceof FishingRodItem) handWithFishingRod = Hand.OFF_HAND;
