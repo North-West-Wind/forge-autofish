@@ -1,6 +1,17 @@
 {
   "key.forgeautofish.autofish": "Toggle AutoFish",
+  "key.forgeautofish.rodprotect": "Toggle Fishing Rod Protection",
+  "key.forgeautofish.autoreplace": "Toggle Auto Replace",
+  "key.forgeautofish.command": "Run Command",
   "key.categories.forgeautofish": "AutoFish for Forge",
 
-  "toggle.forgeautofish": "%s \u00A7fAutoFish"
+  "toggle.forgeautofish": "%s \u00A7fAutoFish",
+  "toggle.rodprotect": "%s \u00A7fFishing Rod Protection",
+  "toggle.autoreplace": "%s \u00A7fAuto Replace",
+  "showprefix.forgeautofish": "\u00A7bOpen your chat and enter \"%s\" as prefix",
+
+  "warning.autoreplace": "Auto Replace Coming Soon",
+  "error.parselong": "\u00A7c\"%s\" cannot be passed to Long!",
+
+  "commands.recastdelay": "Recast Delay set to \u00A73%d"
 }
