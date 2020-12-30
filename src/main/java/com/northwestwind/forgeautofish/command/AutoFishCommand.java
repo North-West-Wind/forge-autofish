@@ -15,8 +15,8 @@ public class AutoFishCommand {
     }
 
     private static int setRecastDelay(CommandSource source, Long delay) {
-        AutoFishHandler.delay = delay;
-        Config.setDelay(delay);
+        AutoFishHandler.recastDelay = delay;
+        Config.setRecastDelay(delay);
         source.sendFeedback(new TranslationTextComponent("commands.recastdelay", delay), true);
         return 0;
     }
