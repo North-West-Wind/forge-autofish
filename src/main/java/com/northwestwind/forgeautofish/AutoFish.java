@@ -1,6 +1,5 @@
 package com.northwestwind.forgeautofish;
 
-import com.northwestwind.forgeautofish.command.AutoFishCommand;
 import com.northwestwind.forgeautofish.config.Config;
 import com.northwestwind.forgeautofish.handler.AutoFishHandler;
 import com.northwestwind.forgeautofish.keybind.KeyBinds;
