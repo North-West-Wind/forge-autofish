@@ -68,19 +68,19 @@ public class AutoFishHandler {
         if (KeyBinds.autofish.isPressed()) {
             Config.setAutoFish(!autofishenabled);
             if (Minecraft.getInstance().player != null)
-                Minecraft.getInstance().player.sendStatusMessage(new TranslationTextComponent("toggle.forgeautofish", (autofishenabled ? "\u00A7aEnabled" : "\u00A7cDisabled")), true);
+                Minecraft.getInstance().player.sendStatusMessage(new TranslationTextComponent("toggle.forgeautofish", new TranslationTextComponent("toggle.enable."+autofishenabled).getString()), true);
         } else if (KeyBinds.rodprotect.isPressed()) {
             Config.setRodProtect(!rodprotectenabled);
             if (Minecraft.getInstance().player != null)
-                Minecraft.getInstance().player.sendStatusMessage(new TranslationTextComponent("toggle.rodprotect", (rodprotectenabled ? "\u00A7aEnabled" : "\u00A7cDisabled")), true);
+                Minecraft.getInstance().player.sendStatusMessage(new TranslationTextComponent("toggle.rodprotect", new TranslationTextComponent("toggle.enable."+rodprotectenabled).getString()), true);
         } else if (KeyBinds.autoreplace.isPressed()) {
             Config.setAutoReplace(!autoreplaceenabled);
             if (Minecraft.getInstance().player != null)
-                Minecraft.getInstance().player.sendStatusMessage(new TranslationTextComponent("warning.autoreplace", (autoreplaceenabled ? "\u00A7aEnabled" : "\u00A7cDisabled")), true);
+                Minecraft.getInstance().player.sendStatusMessage(new TranslationTextComponent("warning.autoreplace", new TranslationTextComponent("toggle.enable."+autoreplaceenabled).getString()), true);
         } else if (KeyBinds.itemfilter.isPressed()) {
             Config.enableFilter(!itemfilter);
             if (Minecraft.getInstance().player != null)
-                Minecraft.getInstance().player.sendStatusMessage(new TranslationTextComponent("toggle.itemfilter", (itemfilter ? "\u00A7aEnabled" : "\u00A7cDisabled")), true);
+                Minecraft.getInstance().player.sendStatusMessage(new TranslationTextComponent("toggle.itemfilter", new TranslationTextComponent("toggle.enable."+itemfilter).getString()), true);
         } else if (KeyBinds.settings.isPressed() && e.getAction() == GLFW.GLFW_PRESS)
             Minecraft.getInstance().displayGuiScreen(new SettingsScreen());
     }

@@ -34,9 +34,14 @@ public class RecastDelayScreen extends Screen {
         this.children.add(recastDelay);
         Button save = new Button(this.width / 2 - 75, this.height / 2, 150, 20, new TranslationTextComponent("gui.setrecastdelay.save"), button -> {
             if (!isNumeric(recastDelay.getText())) recastDelay.setText(Long.toString(AutoFishHandler.recastDelay));
-            long delay = Long.parseLong(recastDelay.getText());
-            Config.setRecastDelay(delay);
-            Minecraft.getInstance().displayGuiScreen(parent);
+            else {
+                long delay = Long.parseLong(recastDelay.getText());
+                if (delay < Config.RECAST_DELAY_RANGE[1] || delay > Config.RECAST_DELAY_RANGE[2]) recastDelay.setText(Long.toString(AutoFishHandler.recastDelay));
+                else {
+                    Config.setRecastDelay(delay);
+                    Minecraft.getInstance().displayGuiScreen(parent);
+                }
+            }
         });
         addButton(save);
     }

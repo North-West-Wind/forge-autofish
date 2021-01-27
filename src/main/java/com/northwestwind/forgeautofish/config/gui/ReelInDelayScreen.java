@@ -33,10 +33,15 @@ public class ReelInDelayScreen extends Screen {
         reelInDelay.setText(Long.toString(AutoFishHandler.reelInDelay));
         this.children.add(reelInDelay);
         Button save = new Button(this.width / 2 - 75, this.height / 2, 150, 20, new TranslationTextComponent("gui.setreelindelay.save"), button -> {
-            if (!isNumeric(reelInDelay.getText())) reelInDelay.setText(Long.toString(AutoFishHandler.reelInDelay));
-            long delay = Long.parseLong(reelInDelay.getText());
-            Config.setReelInDelay(delay);
-            Minecraft.getInstance().displayGuiScreen(parent);
+            if (!isNumeric(reelInDelay.getText())) reelInDelay.setText(Long.toString(AutoFishHandler.recastDelay));
+            else {
+                long delay = Long.parseLong(reelInDelay.getText());
+                if (delay < Config.REEL_IN_DELAY_RANGE[1] || delay > Config.REEL_IN_DELAY_RANGE[2]) reelInDelay.setText(Long.toString(AutoFishHandler.reelInDelay));
+                else {
+                    Config.setRecastDelay(delay);
+                    Minecraft.getInstance().displayGuiScreen(parent);
+                }
+            }
         });
         addButton(save);
     }

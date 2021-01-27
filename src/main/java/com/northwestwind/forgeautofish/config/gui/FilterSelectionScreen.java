@@ -74,7 +74,7 @@ public class FilterSelectionScreen extends Screen {
                 }
                 return matchmod && matchtag && matcharg;
             }).collect(Collectors.toList());
-            maxPage = (int) Math.ceil(original.size() / (double) max);
+            maxPage = (int) Math.ceil(searching.size() / (double) max);
             if (page > maxPage - 1) page = maxPage - 1;
         });
         this.children.add(search);
