@@ -1,6 +1,6 @@
-package com.northwestwind.forgeautofish.config.gui;
+package ml.northwestwind.forgeautofish.config.gui;
 
-import com.northwestwind.forgeautofish.config.Config;
+import ml.northwestwind.forgeautofish.config.Config;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
@@ -72,7 +72,7 @@ public class FilterSelectionScreen extends Screen {
                 }
                 return matchmod && matchtag && matcharg;
             }).collect(Collectors.toList());
-            maxPage = (int) Math.ceil(original.size() / (double) max);
+            maxPage = (int) Math.ceil(searching.size() / (double) max);
             if (page > maxPage - 1) page = maxPage - 1;
         });
         this.children.add(search);

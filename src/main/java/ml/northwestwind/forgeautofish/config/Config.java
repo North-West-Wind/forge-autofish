@@ -1,15 +1,18 @@
-package com.northwestwind.forgeautofish.config;
+package ml.northwestwind.forgeautofish.config;
 
 import com.electronwill.nightconfig.core.file.CommentedFileConfig;
 import com.electronwill.nightconfig.core.io.WritingMode;
 import com.google.common.collect.Lists;
-import com.northwestwind.forgeautofish.handler.AutoFishHandler;
+import ml.northwestwind.forgeautofish.handler.AutoFishHandler;
 import net.minecraftforge.common.ForgeConfigSpec;
 
 import java.io.File;
 import java.util.List;
 
 public class Config {
+
+    public static final long[] RECAST_DELAY_RANGE = { 1000L, 100L, 30000L };
+    public static final long[] REEL_IN_DELAY_RANGE = { 0L, 0L, 30000L };
 
     private static final ForgeConfigSpec.Builder CLIENT_BUILDER = new ForgeConfigSpec.Builder();
     public static final ForgeConfigSpec CLIENT;
@@ -34,8 +37,8 @@ public class Config {
     }
 
     public static void init() {
-        RECAST_DELAY = CLIENT_BUILDER.comment("Sets the delay before casting the fishing rod again (in milliseconds).").defineInRange("forgeautofish.recastdelay", 1000L, 100L, 30000L);
-        REEL_IN_DELAY = CLIENT_BUILDER.comment("Sets the delay before reeling in the fishing rod after catching a fish (in milliseconds).").defineInRange("forgeautofish.reelindelay", 0L, 0L, 30000L);
+        RECAST_DELAY = CLIENT_BUILDER.comment("Sets the delay before casting the fishing rod again (in milliseconds).").defineInRange("forgeautofish.recastdelay", RECAST_DELAY_RANGE[0], RECAST_DELAY_RANGE[1], RECAST_DELAY_RANGE[2]);
+        REEL_IN_DELAY = CLIENT_BUILDER.comment("Sets the delay before reeling in the fishing rod after catching a fish (in milliseconds).").defineInRange("forgeautofish.reelindelay", REEL_IN_DELAY_RANGE[0], REEL_IN_DELAY_RANGE[1], REEL_IN_DELAY_RANGE[2]);
         AUTO_FISH = CLIENT_BUILDER.comment("Sets the default status of the Auto Fish feature").define("forgeautofish.autofish", true);
         ROD_PROTECT = CLIENT_BUILDER.comment("Sets whether should the mod be turned off when the fishing rod is about to break.").define("forgeautofish.rodprotect", true);
         AUTO_REPLACE = CLIENT_BUILDER.comment("Does nothing currently").define("forgeautofish.autoreplace", true);

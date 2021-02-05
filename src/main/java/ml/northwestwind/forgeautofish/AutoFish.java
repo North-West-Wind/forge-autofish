@@ -1,8 +1,8 @@
-package com.northwestwind.forgeautofish;
+package ml.northwestwind.forgeautofish;
 
-import com.northwestwind.forgeautofish.config.Config;
-import com.northwestwind.forgeautofish.handler.AutoFishHandler;
-import com.northwestwind.forgeautofish.keybind.KeyBinds;
+import ml.northwestwind.forgeautofish.config.Config;
+import ml.northwestwind.forgeautofish.handler.AutoFishHandler;
+import ml.northwestwind.forgeautofish.keybind.KeyBinds;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.ExtensionPoint;
 import net.minecraftforge.fml.ModLoadingContext;

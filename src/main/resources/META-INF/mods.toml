@@ -4,7 +4,7 @@ issueTrackerURL="https://github.com/North-West-Wind/forge-autofish/issues"
 
 [[mods]]
 modId="forgeautofish"
-version="2.0.0"
+version="2.0.1"
 displayName="AutoFish for Forge"
 updateJSONURL="https://raw.githubusercontent.com/North-West-Wind/forge-autofish/master/update.json"
 displayURL="https://github.com/North-West-Wind/forge-autofish/"
