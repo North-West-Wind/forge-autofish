@@ -1,7 +1,7 @@
-package com.northwestwind.forgeautofish.config.gui;
+package ml.northwestwind.forgeautofish.config.gui;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.northwestwind.forgeautofish.config.Config;
+import ml.northwestwind.forgeautofish.config.Config;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
@@ -13,7 +13,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.registries.ForgeRegistries;
-import org.apache.logging.log4j.LogManager;
 import org.lwjgl.glfw.GLFW;
 
 import java.awt.*;

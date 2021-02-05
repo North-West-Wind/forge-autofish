@@ -1,9 +1,9 @@
-package com.northwestwind.forgeautofish.command;
+package ml.northwestwind.forgeautofish.command;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.LongArgumentType;
-import com.northwestwind.forgeautofish.config.Config;
-import com.northwestwind.forgeautofish.handler.AutoFishHandler;
+import ml.northwestwind.forgeautofish.config.Config;
+import ml.northwestwind.forgeautofish.handler.AutoFishHandler;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
 import net.minecraft.util.text.TranslationTextComponent;

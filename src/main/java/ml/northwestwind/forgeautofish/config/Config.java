@@ -1,9 +1,9 @@
-package com.northwestwind.forgeautofish.config;
+package ml.northwestwind.forgeautofish.config;
 
 import com.electronwill.nightconfig.core.file.CommentedFileConfig;
 import com.electronwill.nightconfig.core.io.WritingMode;
 import com.google.common.collect.Lists;
-import com.northwestwind.forgeautofish.handler.AutoFishHandler;
+import ml.northwestwind.forgeautofish.handler.AutoFishHandler;
 import net.minecraftforge.common.ForgeConfigSpec;
 
 import java.io.File;

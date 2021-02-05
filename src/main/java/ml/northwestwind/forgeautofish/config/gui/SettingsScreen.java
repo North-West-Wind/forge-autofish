@@ -1,4 +1,4 @@
-package com.northwestwind.forgeautofish.config.gui;
+package ml.northwestwind.forgeautofish.config.gui;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
