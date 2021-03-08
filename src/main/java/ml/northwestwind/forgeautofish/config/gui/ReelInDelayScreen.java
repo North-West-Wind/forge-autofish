@@ -38,7 +38,7 @@ public class ReelInDelayScreen extends Screen {
                 long delay = Long.parseLong(reelInDelay.getText());
                 if (delay < Config.REEL_IN_DELAY_RANGE[1] || delay > Config.REEL_IN_DELAY_RANGE[2]) reelInDelay.setText(Long.toString(AutoFishHandler.reelInDelay));
                 else {
-                    Config.setRecastDelay(delay);
+                    Config.setReelInDelay(delay);
                     Minecraft.getInstance().displayGuiScreen(parent);
                 }
             }
