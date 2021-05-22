@@ -48,7 +48,7 @@ public class FilterSelectionScreen extends Screen {
         search = new TextFieldWidget(this.font, this.width / 2 - 75, 35, 150, 20, new TranslationTextComponent("gui.superfilterscreen.search")) {
             @Override
             public boolean mouseClicked(double mouseX, double mouseY, int button) {
-                if (button == GLFW.GLFW_MOUSE_BUTTON_2) this.setText("");
+                if (button == GLFW.GLFW_MOUSE_BUTTON_2) this.setValue("");
                 return super.mouseClicked(mouseX, mouseY, button);
             }
         };
@@ -69,7 +69,7 @@ public class FilterSelectionScreen extends Screen {
                 }
                 for (String arg : finalArgs) {
                     arg = arg.toLowerCase();
-                    matcharg = item.getRegistryName().getPath().contains(arg) || item.getName().getString().contains(arg);
+                    matcharg = item.getRegistryName().getPath().contains(arg) || item.getDescription().getString().contains(arg);
                 }
                 return matchmod && matchtag && matcharg;
             }).collect(Collectors.toList());
@@ -80,10 +80,10 @@ public class FilterSelectionScreen extends Screen {
         Button add = new Button(this.width / 2 - 75, 60, 72, 20, new TranslationTextComponent("gui.filterselection.save"), button -> {
             List<String> items = selected.stream().map(item -> item.getRegistryName().toString()).collect(Collectors.toList());
             Config.setFILTER(items);
-            Minecraft.getInstance().displayGuiScreen(parent);
+            Minecraft.getInstance().setScreen(parent);
         });
         addButton(add);
-        Button done = new Button(this.width / 2 + 3, 60, 72, 20, new TranslationTextComponent("gui.filterselection.cancel"), button -> Minecraft.getInstance().displayGuiScreen(parent));
+        Button done = new Button(this.width / 2 + 3, 60, 72, 20, new TranslationTextComponent("gui.filterselection.cancel"), button -> Minecraft.getInstance().setScreen(parent));
         addButton(done);
         previous = new Button(this.width / 2 - 100, 60, 20, 20, new StringTextComponent("<"), button -> {
             if (page > 0) page--;
@@ -109,9 +109,9 @@ public class FilterSelectionScreen extends Screen {
             int x = getXPos(h, reducedWidth);
             int y = getYPos(k, reducedHeight);
             ItemStack stack = new ItemStack(item);
-            RenderHelper.enableStandardItemLighting();
+            RenderHelper.turnBackOn();
             if (!stack.isEmpty()) {
-                itemRenderer.renderItemAndEffectIntoGUI(stack, x, y);
+                itemRenderer.renderGuiItem(stack, x, y);
                 if (!clickProcessed && isMouseInRange(clickX, clickY, x, y, x+16, y+16)) {
                     if (selected.contains(item)) selected.remove(item);
                     else selected.add(item);
@@ -121,7 +121,7 @@ public class FilterSelectionScreen extends Screen {
                 else if (isMouseInRange(mouseX, mouseY, x, y,x + 16, y + 16)) fillGradient(matrixStack, x - 2, y - 2, x + 18, y + 18, Color.LIGHT_GRAY.getRGB(), Color.LIGHT_GRAY.getRGB());
                 if (isMouseInRange(mouseX, mouseY, x, y,x + 16, y + 16)) renderTooltip(matrixStack, stack, mouseX, mouseY);
             }
-            RenderHelper.disableStandardItemLighting();
+            RenderHelper.turnOff();
         }
         search.render(matrixStack, mouseX, mouseY, partialTicks);
         super.render(matrixStack, mouseX, mouseY, partialTicks);
@@ -142,8 +142,8 @@ public class FilterSelectionScreen extends Screen {
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
         if (keyCode == GLFW.GLFW_KEY_ESCAPE) {
-            if (!search.isFocused()) Minecraft.getInstance().displayGuiScreen(parent);
-            else search.setFocused2(false);
+            if (!search.isFocused()) Minecraft.getInstance().setScreen(parent);
+            else search.setFocus(false);
         }
         return super.keyPressed(keyCode, scanCode, modifiers);
     }

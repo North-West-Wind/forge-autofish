@@ -6,10 +6,10 @@
   "key.forgeautofish.itemfilter": "切換 物品過濾",
   "key.categories.forgeautofish": "自動釣魚",
 
-  "toggle.forgeautofish": "\u00A7a%s \u00A7f自動釣魚",
-  "toggle.rodprotect": "\u00A7a%s \u00A7f釣竿保護",
-  "toggle.autoreplace": "\u00A7a%s \u00A7f自動取代",
-  "toggle.itemfilter": "\u00A7a%s \u00A7f物品過濾",
+  "toggle.forgeautofish": "%s 自動釣魚",
+  "toggle.rodprotect": "%s 釣竿保護",
+  "toggle.autoreplace": "%s 自動取代",
+  "toggle.itemfilter": "%s 物品過濾",
 
   "warning.autoreplace": "自動過濾 即將來臨",
 

@@ -26,20 +26,20 @@ public class ReelInDelayScreen extends Screen {
         reelInDelay = new TextFieldWidget(this.font, this.width / 2 - 75, this.height / 2 - 25, 150, 20, new TranslationTextComponent("gui.setreelindelay.reelindelay")) {
             @Override
             public boolean mouseClicked(double mouseX, double mouseY, int button) {
-                if (button == GLFW.GLFW_MOUSE_BUTTON_2) this.setText("");
+                if (button == GLFW.GLFW_MOUSE_BUTTON_2) this.setValue("");
                 return super.mouseClicked(mouseX, mouseY, button);
             }
         };
-        reelInDelay.setText(Long.toString(AutoFishHandler.reelInDelay));
+        reelInDelay.setValue(Long.toString(AutoFishHandler.reelInDelay));
         this.children.add(reelInDelay);
         Button save = new Button(this.width / 2 - 75, this.height / 2, 150, 20, new TranslationTextComponent("gui.setreelindelay.save"), button -> {
-            if (!isNumeric(reelInDelay.getText())) reelInDelay.setText(Long.toString(AutoFishHandler.recastDelay));
+            if (!isNumeric(reelInDelay.getValue())) reelInDelay.setValue(Long.toString(AutoFishHandler.recastDelay));
             else {
-                long delay = Long.parseLong(reelInDelay.getText());
-                if (delay < Config.REEL_IN_DELAY_RANGE[1] || delay > Config.REEL_IN_DELAY_RANGE[2]) reelInDelay.setText(Long.toString(AutoFishHandler.reelInDelay));
+                long delay = Long.parseLong(reelInDelay.getValue());
+                if (delay < Config.REEL_IN_DELAY_RANGE[1] || delay > Config.REEL_IN_DELAY_RANGE[2]) reelInDelay.setValue(Long.toString(AutoFishHandler.reelInDelay));
                 else {
-                    Config.setRecastDelay(delay);
-                    Minecraft.getInstance().displayGuiScreen(parent);
+                    Config.setReelInDelay(delay);
+                    Minecraft.getInstance().setScreen(parent);
                 }
             }
         });
@@ -75,7 +75,7 @@ public class ReelInDelayScreen extends Screen {
 
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        if (keyCode == GLFW.GLFW_KEY_ESCAPE) Minecraft.getInstance().displayGuiScreen(parent);
+        if (keyCode == GLFW.GLFW_KEY_ESCAPE) Minecraft.getInstance().setScreen(parent);
         return super.keyPressed(keyCode, scanCode, modifiers);
     }
 

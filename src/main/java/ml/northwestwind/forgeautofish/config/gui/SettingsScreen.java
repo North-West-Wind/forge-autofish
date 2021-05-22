@@ -18,13 +18,13 @@ public class SettingsScreen extends Screen {
 
     @Override
     protected void init() {
-        Button recastDelay = new Button(this.width / 2 - 75, this.height / 2 - 40, 150, 20, new TranslationTextComponent("gui.forgeautofish.recastdelay"), button -> Minecraft.getInstance().displayGuiScreen(new RecastDelayScreen(this)));
+        Button recastDelay = new Button(this.width / 2 - 75, this.height / 2 - 40, 150, 20, new TranslationTextComponent("gui.forgeautofish.recastdelay"), button -> Minecraft.getInstance().setScreen(new RecastDelayScreen(this)));
         addButton(recastDelay);
-        Button reelInDelay = new Button(this.width / 2 - 75, this.height / 2 - 15, 150, 20, new TranslationTextComponent("gui.forgeautofish.reelindelay"), button -> Minecraft.getInstance().displayGuiScreen(new ReelInDelayScreen(this)));
+        Button reelInDelay = new Button(this.width / 2 - 75, this.height / 2 - 15, 150, 20, new TranslationTextComponent("gui.forgeautofish.reelindelay"), button -> Minecraft.getInstance().setScreen(new ReelInDelayScreen(this)));
         addButton(reelInDelay);
-        Button filter = new Button(this.width / 2 - 75, this.height / 2 + 10, 150, 20, new TranslationTextComponent("gui.forgeautofish.filter"), button -> Minecraft.getInstance().displayGuiScreen(new SuperFilterScreen(this)));
+        Button filter = new Button(this.width / 2 - 75, this.height / 2 + 10, 150, 20, new TranslationTextComponent("gui.forgeautofish.filter"), button -> Minecraft.getInstance().setScreen(new SuperFilterScreen(this)));
         addButton(filter);
-        Button done = new Button(this.width / 2 - 75, this.height - 25, 150, 20, new TranslationTextComponent("gui.forgeautofish.done"), button -> closeScreen());
+        Button done = new Button(this.width / 2 - 75, this.height - 25, 150, 20, new TranslationTextComponent("gui.forgeautofish.done"), button -> onClose());
         addButton(done);
     }
 

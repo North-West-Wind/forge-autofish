@@ -53,7 +53,7 @@ public class SuperFilterScreen extends Screen {
         search = new TextFieldWidget(this.font, this.width / 2 - 75, 35, 150, 20, new TranslationTextComponent("gui.superfilterscreen.search")) {
             @Override
             public boolean mouseClicked(double mouseX, double mouseY, int button) {
-                if (button == GLFW.GLFW_MOUSE_BUTTON_2) this.setText("");
+                if (button == GLFW.GLFW_MOUSE_BUTTON_2) this.setValue("");
                 return super.mouseClicked(mouseX, mouseY, button);
             }
         };
@@ -74,7 +74,7 @@ public class SuperFilterScreen extends Screen {
                 }
                 for (String arg : finalArgs) {
                     arg = arg.toLowerCase();
-                    matcharg = item.getRegistryName().getPath().contains(arg) || item.getName().getString().contains(arg);
+                    matcharg = item.getRegistryName().getPath().contains(arg) || item.getDescription().getString().contains(arg);
                 }
                 return matchmod && matchtag && matcharg;
             }).collect(Collectors.toList());
@@ -82,9 +82,9 @@ public class SuperFilterScreen extends Screen {
             if (page > maxPage - 1) page = maxPage - 1;
         });
         this.children.add(search);
-        Button add = new Button(this.width / 2 - 75, 60, 72, 20, new TranslationTextComponent("gui.superfilterscreen.openfilter"), button -> Minecraft.getInstance().displayGuiScreen(new FilterSelectionScreen(this)));
+        Button add = new Button(this.width / 2 - 75, 60, 72, 20, new TranslationTextComponent("gui.superfilterscreen.openfilter"), button -> Minecraft.getInstance().setScreen(new FilterSelectionScreen(this)));
         addButton(add);
-        Button done = new Button(this.width / 2 + 3, 60, 72, 20, new TranslationTextComponent("gui.superfilterscreen.done"), button -> Minecraft.getInstance().displayGuiScreen(parent));
+        Button done = new Button(this.width / 2 + 3, 60, 72, 20, new TranslationTextComponent("gui.superfilterscreen.done"), button -> Minecraft.getInstance().setScreen(parent));
         addButton(done);
         previous = new Button(this.width / 2 - 100, 60, 20, 20, new StringTextComponent("<"), button -> {
             if (page > 0) page--;
@@ -109,10 +109,10 @@ public class SuperFilterScreen extends Screen {
             int k = (i % max) % (max / 3);
             ItemStack stack = ItemStack.EMPTY;
             if (item != null) stack = new ItemStack(item);
-            RenderHelper.enableStandardItemLighting();
-            if (!stack.isEmpty()) itemRenderer.renderItemAndEffectIntoGUI(stack, (reducedWidth * h / 3) + 15, (reducedHeight * k / (max / 3)) + 90);
-            RenderHelper.disableStandardItemLighting();
-            this.font.drawString(matrixStack, stack.getDisplayName().getString(), (float) ((reducedWidth * h / 3) + 45), (float) ((reducedHeight * k / (max / 3)) + 95), Color.WHITE.getRGB());
+            RenderHelper.turnBackOn();
+            if (!stack.isEmpty()) itemRenderer.renderGuiItem(stack, (reducedWidth * h / 3) + 15, (reducedHeight * k / (max / 3)) + 90);
+            RenderHelper.turnOff();
+            this.font.draw(matrixStack, stack.getDisplayName().getString(), (float) ((reducedWidth * h / 3) + 45), (float) ((reducedHeight * k / (max / 3)) + 95), Color.WHITE.getRGB());
         }
         search.render(matrixStack, mouseX, mouseY, partialTicks);
         super.render(matrixStack, mouseX, mouseY, partialTicks);
@@ -125,7 +125,7 @@ public class SuperFilterScreen extends Screen {
 
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        if (keyCode == GLFW.GLFW_KEY_ESCAPE) Minecraft.getInstance().displayGuiScreen(parent);
+        if (keyCode == GLFW.GLFW_KEY_ESCAPE) Minecraft.getInstance().setScreen(parent);
         return super.keyPressed(keyCode, scanCode, modifiers);
     }
 

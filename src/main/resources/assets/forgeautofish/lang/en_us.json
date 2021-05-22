@@ -6,10 +6,10 @@
   "key.forgeautofish.itemfilter": "Toggle Item Filter",
   "key.categories.forgeautofish": "AutoFish for Forge",
 
-  "toggle.forgeautofish": "\u00A7a%s \u00A7fAutoFish",
-  "toggle.rodprotect": "\u00A7a%s \u00A7fFishing Rod Protection",
-  "toggle.autoreplace": "\u00A7a%s \u00A7fAuto Replace",
-  "toggle.itemfilter": "\u00A7a%s \u00A7fItem Filter",
+  "toggle.forgeautofish": "%s AutoFish",
+  "toggle.rodprotect": "%s Fishing Rod Protection",
+  "toggle.autoreplace": "%s Auto Replace",
+  "toggle.itemfilter": "%s Item Filter",
 
   "warning.autoreplace": "Auto Replace Coming Soon",
 

@@ -30,6 +30,6 @@ Note that this is my first mod, so there might be bugs.
 [[dependencies.forgeautofish]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.16.1,1.16.5]"
+    versionRange="[1.16.1,1.17)"
     ordering="NONE"
     side="BOTH"

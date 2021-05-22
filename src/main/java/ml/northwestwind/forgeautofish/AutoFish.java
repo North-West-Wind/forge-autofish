@@ -13,11 +13,14 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
 import net.minecraftforge.fml.network.FMLNetworkConstants;
 import org.apache.commons.lang3.tuple.Pair;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @Mod("forgeautofish")
 public class AutoFish
 {
     public static final String MODID = "forgeautofish";
+    public static final Logger LOGGER = LogManager.getLogger();
 
     public AutoFish() {
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, Config.CLIENT);
@@ -26,7 +29,6 @@ public class AutoFish
 
         Config.loadConfig(FMLPaths.CONFIGDIR.get().resolve("forgeautofish-client.toml").toString());
         ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.DISPLAYTEST, () -> Pair.of(() -> FMLNetworkConstants.IGNORESERVERONLY, (a, b) -> true));
-        MinecraftForge.EVENT_BUS.register(new AutoFishHandler());
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {
