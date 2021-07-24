@@ -1,17 +1,16 @@
 package ml.northwestwind.forgeautofish.config.gui;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import ml.northwestwind.forgeautofish.config.Config;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.lwjgl.glfw.GLFW;
 
@@ -22,7 +21,7 @@ import java.util.stream.Collectors;
 
 public class FilterSelectionScreen extends Screen {
     private final Screen parent;
-    private TextFieldWidget search;
+    private EditBox search;
     private final Collection<Item> original = ForgeRegistries.ITEMS.getValues();
     private Collection<Item> searching;
     private final Set<Item> selected = new HashSet<>(Config.FILTER.get().stream().map(string -> ForgeRegistries.ITEMS.getValue(new ResourceLocation(string))).collect(Collectors.toList()));
@@ -34,7 +33,7 @@ public class FilterSelectionScreen extends Screen {
     int reducedWidth;
 
     public FilterSelectionScreen(Screen parent) {
-        super(new TranslationTextComponent("gui.filterselection"));
+        super(new TranslatableComponent("gui.filterselection"));
         this.parent = parent;
     }
 
@@ -45,7 +44,7 @@ public class FilterSelectionScreen extends Screen {
         max = /* (int) Math.round(300 * (reducedWidth / 550.0 + reducedHeight / 330.0) / 2.0) */ 300;
         maxPage = (int) Math.ceil(original.size() / (double) max);
         searching = original;
-        search = new TextFieldWidget(this.font, this.width / 2 - 75, 35, 150, 20, new TranslationTextComponent("gui.superfilterscreen.search")) {
+        search = new EditBox(this.font, this.width / 2 - 75, 35, 150, 20, new TranslatableComponent("gui.superfilterscreen.search")) {
             @Override
             public boolean mouseClicked(double mouseX, double mouseY, int button) {
                 if (button == GLFW.GLFW_MOUSE_BUTTON_2) this.setValue("");
@@ -76,31 +75,31 @@ public class FilterSelectionScreen extends Screen {
             maxPage = (int) Math.ceil(searching.size() / (double) max);
             if (page > maxPage - 1) page = maxPage - 1;
         });
-        this.children.add(search);
-        Button add = new Button(this.width / 2 - 75, 60, 72, 20, new TranslationTextComponent("gui.filterselection.save"), button -> {
+        addRenderableWidget(search);
+        Button add = new Button(this.width / 2 - 75, 60, 72, 20, new TranslatableComponent("gui.filterselection.save"), button -> {
             List<String> items = selected.stream().map(item -> item.getRegistryName().toString()).collect(Collectors.toList());
             Config.setFILTER(items);
             Minecraft.getInstance().setScreen(parent);
         });
-        addButton(add);
-        Button done = new Button(this.width / 2 + 3, 60, 72, 20, new TranslationTextComponent("gui.filterselection.cancel"), button -> Minecraft.getInstance().setScreen(parent));
-        addButton(done);
-        previous = new Button(this.width / 2 - 100, 60, 20, 20, new StringTextComponent("<"), button -> {
+        addRenderableWidget(add);
+        Button done = new Button(this.width / 2 + 3, 60, 72, 20, new TranslatableComponent("gui.filterselection.cancel"), button -> Minecraft.getInstance().setScreen(parent));
+        addRenderableWidget(done);
+        previous = new Button(this.width / 2 - 100, 60, 20, 20, new TextComponent("<"), button -> {
             if (page > 0) page--;
         });
         previous.visible = false;
-        addButton(previous);
-        next = new Button(this.width / 2 + 80, 60, 20, 20, new StringTextComponent(">"), button -> {
+        addRenderableWidget(previous);
+        next = new Button(this.width / 2 + 80, 60, 20, 20, new TextComponent(">"), button -> {
             if (page < maxPage - 1) page++;
         });
         next.visible = false;
-        addButton(next);
+        addRenderableWidget(next);
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-        this.renderBackground(matrixStack);
-        drawCenteredString(matrixStack, this.font, this.title, this.width / 2, 20, -1);
+    public void render(PoseStack PoseStack, int mouseX, int mouseY, float partialTicks) {
+        this.renderBackground(PoseStack);
+        drawCenteredString(PoseStack, this.font, this.title, this.width / 2, 20, -1);
         Item[] items = searching.toArray(new Item[0]);
         for (int i = page * max; i < Math.min((page + 1) * max, searching.size()); i++) {
             Item item = items[i];
@@ -109,7 +108,6 @@ public class FilterSelectionScreen extends Screen {
             int x = getXPos(h, reducedWidth);
             int y = getYPos(k, reducedHeight);
             ItemStack stack = new ItemStack(item);
-            RenderHelper.turnBackOn();
             if (!stack.isEmpty()) {
                 itemRenderer.renderGuiItem(stack, x, y);
                 if (!clickProcessed && isMouseInRange(clickX, clickY, x, y, x+16, y+16)) {
@@ -117,14 +115,13 @@ public class FilterSelectionScreen extends Screen {
                     else selected.add(item);
                     clickProcessed = true;
                 }
-                if (selected.contains(item)) fillGradient(matrixStack, x - 2, y - 2, x + 18, y + 18, Color.GREEN.getRGB(), Color.GREEN.getRGB());
-                else if (isMouseInRange(mouseX, mouseY, x, y,x + 16, y + 16)) fillGradient(matrixStack, x - 2, y - 2, x + 18, y + 18, Color.LIGHT_GRAY.getRGB(), Color.LIGHT_GRAY.getRGB());
-                if (isMouseInRange(mouseX, mouseY, x, y,x + 16, y + 16)) renderTooltip(matrixStack, stack, mouseX, mouseY);
+                if (selected.contains(item)) fillGradient(PoseStack, x - 2, y - 2, x + 18, y + 18, Color.GREEN.getRGB(), Color.GREEN.getRGB());
+                else if (isMouseInRange(mouseX, mouseY, x, y,x + 16, y + 16)) fillGradient(PoseStack, x - 2, y - 2, x + 18, y + 18, Color.LIGHT_GRAY.getRGB(), Color.LIGHT_GRAY.getRGB());
+                if (isMouseInRange(mouseX, mouseY, x, y,x + 16, y + 16)) renderTooltip(PoseStack, stack, mouseX, mouseY);
             }
-            RenderHelper.turnOff();
         }
-        search.render(matrixStack, mouseX, mouseY, partialTicks);
-        super.render(matrixStack, mouseX, mouseY, partialTicks);
+        search.render(PoseStack, mouseX, mouseY, partialTicks);
+        super.render(PoseStack, mouseX, mouseY, partialTicks);
     }
 
     private boolean isMouseInRange(double mouseX, double mouseY, int x1, int y1, int x2, int y2) {

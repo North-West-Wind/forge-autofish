@@ -1,17 +1,16 @@
 package ml.northwestwind.forgeautofish.config.gui;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import ml.northwestwind.forgeautofish.config.Config;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.lwjgl.glfw.GLFW;
 
@@ -22,7 +21,7 @@ import java.util.stream.Collectors;
 
 public class SuperFilterScreen extends Screen {
     private final Screen parent;
-    private TextFieldWidget search;
+    private EditBox search;
     private Collection<Item> original;
     private Collection<Item> searching;
     private int page = 0, maxPage, max = 30;
@@ -31,7 +30,7 @@ public class SuperFilterScreen extends Screen {
     int reducedWidth;
 
     protected SuperFilterScreen(Screen parent) {
-        super(new TranslationTextComponent("gui.superfilterscreen"));
+        super(new TranslatableComponent("gui.superfilterscreen"));
         this.parent = parent;
     }
 
@@ -50,7 +49,7 @@ public class SuperFilterScreen extends Screen {
         original = Config.FILTER.get().stream().map(string -> ForgeRegistries.ITEMS.getValue(new ResourceLocation(string))).collect(Collectors.toList());
         maxPage = (int) Math.ceil(original.size() / (double) max);
         searching = original;
-        search = new TextFieldWidget(this.font, this.width / 2 - 75, 35, 150, 20, new TranslationTextComponent("gui.superfilterscreen.search")) {
+        search = new EditBox(this.font, this.width / 2 - 75, 35, 150, 20, new TranslatableComponent("gui.superfilterscreen.search")) {
             @Override
             public boolean mouseClicked(double mouseX, double mouseY, int button) {
                 if (button == GLFW.GLFW_MOUSE_BUTTON_2) this.setValue("");
@@ -81,27 +80,27 @@ public class SuperFilterScreen extends Screen {
             maxPage = (int) Math.ceil(original.size() / (double) max);
             if (page > maxPage - 1) page = maxPage - 1;
         });
-        this.children.add(search);
-        Button add = new Button(this.width / 2 - 75, 60, 72, 20, new TranslationTextComponent("gui.superfilterscreen.openfilter"), button -> Minecraft.getInstance().setScreen(new FilterSelectionScreen(this)));
-        addButton(add);
-        Button done = new Button(this.width / 2 + 3, 60, 72, 20, new TranslationTextComponent("gui.superfilterscreen.done"), button -> Minecraft.getInstance().setScreen(parent));
-        addButton(done);
-        previous = new Button(this.width / 2 - 100, 60, 20, 20, new StringTextComponent("<"), button -> {
+        addRenderableWidget(search);
+        Button add = new Button(this.width / 2 - 75, 60, 72, 20, new TranslatableComponent("gui.superfilterscreen.openfilter"), button -> Minecraft.getInstance().setScreen(new FilterSelectionScreen(this)));
+        addRenderableWidget(add);
+        Button done = new Button(this.width / 2 + 3, 60, 72, 20, new TranslatableComponent("gui.superfilterscreen.done"), button -> Minecraft.getInstance().setScreen(parent));
+        addRenderableWidget(done);
+        previous = new Button(this.width / 2 - 100, 60, 20, 20, new TextComponent("<"), button -> {
             if (page > 0) page--;
         });
         previous.visible = false;
-        addButton(previous);
-        next = new Button(this.width / 2 + 80, 60, 20, 20, new StringTextComponent(">"), button -> {
+        addRenderableWidget(previous);
+        next = new Button(this.width / 2 + 80, 60, 20, 20, new TextComponent(">"), button -> {
             if (page < maxPage - 1) page++;
         });
         next.visible = false;
-        addButton(next);
+        addRenderableWidget(next);
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-        this.renderBackground(matrixStack);
-        drawCenteredString(matrixStack, this.font, this.title, this.width / 2, 20, -1);
+    public void render(PoseStack PoseStack, int mouseX, int mouseY, float partialTicks) {
+        this.renderBackground(PoseStack);
+        drawCenteredString(PoseStack, this.font, this.title, this.width / 2, 20, -1);
         Item[] items = searching.toArray(new Item[0]);
         for (int i = page * max; i < Math.min((page + 1) * max, searching.size()); i++) {
             Item item = items[i];
@@ -109,13 +108,11 @@ public class SuperFilterScreen extends Screen {
             int k = (i % max) % (max / 3);
             ItemStack stack = ItemStack.EMPTY;
             if (item != null) stack = new ItemStack(item);
-            RenderHelper.turnBackOn();
             if (!stack.isEmpty()) itemRenderer.renderGuiItem(stack, (reducedWidth * h / 3) + 15, (reducedHeight * k / (max / 3)) + 90);
-            RenderHelper.turnOff();
-            this.font.draw(matrixStack, stack.getDisplayName().getString(), (float) ((reducedWidth * h / 3) + 45), (float) ((reducedHeight * k / (max / 3)) + 95), Color.WHITE.getRGB());
+            this.font.draw(PoseStack, stack.getDisplayName().getString(), (float) ((reducedWidth * h / 3) + 45), (float) ((reducedHeight * k / (max / 3)) + 95), Color.WHITE.getRGB());
         }
-        search.render(matrixStack, mouseX, mouseY, partialTicks);
-        super.render(matrixStack, mouseX, mouseY, partialTicks);
+        search.render(PoseStack, mouseX, mouseY, partialTicks);
+        super.render(PoseStack, mouseX, mouseY, partialTicks);
     }
 
     @Override
