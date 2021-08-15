@@ -9,7 +9,8 @@
     "2.0.2": "Delay Cap in GUI + Trad. Chinese Translation",
     "2.0.3": "Supports Lava Fishing from Other Mods",
     "2.1.0": "Auto Replace + Major Bug Fixes",
-    "2.1.1": "Fixed versions"
+    "2.1.1": "Fixed versions",
+    "2.1.2": "Fixed mod tracking multiple players on server"
   },
   "1.16.4": {
     "1.0.6": "1.16.4 Release",
