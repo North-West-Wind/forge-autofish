@@ -76,6 +76,7 @@ public class AutoFishHandler {
     public static void onPlayerTick(final TickEvent.PlayerTickEvent e) {
         if (e.side != LogicalSide.CLIENT || !e.phase.equals(TickEvent.Phase.START)) return;
         PlayerEntity player = e.player;
+        if (!player.getUUID().equals(Minecraft.getInstance().player.getUUID())) return;
         if (pendingReelIn) {
             tick++;
             if (tick >= reelInDelay) {
