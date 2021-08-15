@@ -1,7 +1,8 @@
 {
   "homepage": "https://github.com/North-West-Wind/forge-autofish/",
   "1.17.1": {
-    "3.0.0": "1.17.1 Release"
+    "3.0.0": "1.17.1 Release",
+    "3.0.1": "Fixed mod tracking multiple players on server"
   },
   "1.16.5": {
     "2.0.1": "1.16.5 Release",

@@ -12,7 +12,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '3.0.0'
+version = '3.0.1'
 group = 'ml.northwestwind.forgeautofish'
 archivesBaseName = 'forgeautofish'
 
@@ -64,7 +64,7 @@ minecraft {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.17.1-37.0.1'
+    minecraft 'net.minecraftforge:forge:1.17.1-37.0.33'
     implementation('cpw.mods:securejarhandler') { version { strictly '0.9.45' } }
 }
 
