@@ -18,13 +18,9 @@ public class Config {
     private static final ForgeConfigSpec.Builder CLIENT_BUILDER = new ForgeConfigSpec.Builder();
     public static final ForgeConfigSpec CLIENT;
 
-    public static ForgeConfigSpec.LongValue RECAST_DELAY;
-    public static ForgeConfigSpec.LongValue REEL_IN_DELAY;
-    public static ForgeConfigSpec.BooleanValue AUTO_FISH;
-    public static ForgeConfigSpec.BooleanValue ROD_PROTECT;
-    public static ForgeConfigSpec.BooleanValue AUTO_REPLACE;
-    public static ForgeConfigSpec.BooleanValue ALL_FILTERS;
-    public static ForgeConfigSpec.ConfigValue<List<String>> FILTER;
+    public static ForgeConfigSpec.LongValue RECAST_DELAY, REEL_IN_DELAY;
+    public static ForgeConfigSpec.BooleanValue AUTO_FISH, ROD_PROTECT, AUTO_REPLACE, ALL_FILTERS;
+    public static ForgeConfigSpec.ConfigValue<List<String>> FILTER, PRIORITIZE;
 
     static {
         init();
@@ -45,6 +41,7 @@ public class Config {
         AUTO_REPLACE = CLIENT_BUILDER.comment("Does nothing currently").define("forgeautofish.autoreplace", true);
         ALL_FILTERS = CLIENT_BUILDER.comment("Toggles the entire item filter").define("forgeautofish.filter.all", true);
         FILTER = CLIENT_BUILDER.comment("Sets item filter").define("forgeautofish.filter.items", Lists.newArrayList("minecraft:rotten_flesh"));
+        PRIORITIZE = CLIENT_BUILDER.comment("Puts these items to top of filter.").define("forgeautofish.filter.prioritize", Lists.newArrayList("minecraft:cod", "minecraft:salmon", "minecraft:tropical_fish", "minecraft:pufferfish", "minecraft:bow", "minecraft:enchanted_book", "minecraft:fishing_rod", "minecraft:name_tag", "minecraft:nautilus_shell", "minecraft:saddle", "minecraft:lily_pad", "minecraft:bowl", "minecraft:leather", "minecraft:leather_boots", "minecraft:rotten_flesh", "minecraft:stick", "minecraft:string", "minecraft:water_bottle", "minecraft:bone", "minecraft:ink_sac", "minecraft:tripwire_hook", "minecraft:bamboo", "minecraft:cocoa_beans"));
     }
 
     public static void setRecastDelay(long recastDelay) {

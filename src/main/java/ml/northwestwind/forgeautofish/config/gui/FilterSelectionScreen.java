@@ -1,5 +1,6 @@
 package ml.northwestwind.forgeautofish.config.gui;
 
+import com.google.common.collect.Lists;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import ml.northwestwind.forgeautofish.config.Config;
 import net.minecraft.client.Minecraft;
@@ -13,12 +14,15 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.apache.logging.log4j.LogManager;
 import org.lwjgl.glfw.GLFW;
 
 import java.awt.*;
 import java.util.*;
 import java.util.List;
+import java.util.function.IntFunction;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class FilterSelectionScreen extends Screen {
     private final Screen parent;
@@ -101,27 +105,35 @@ public class FilterSelectionScreen extends Screen {
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         this.renderBackground(matrixStack);
         drawCenteredString(matrixStack, this.font, this.title, this.width / 2, 20, -1);
-        Item[] items = searching.toArray(new Item[0]);
-        for (int i = page * max; i < Math.min((page + 1) * max, searching.size()); i++) {
-            Item item = items[i];
-            int h = (i % max) / (max / 30);
-            int k = (i % max) % (max / 30);
-            int x = getXPos(h, reducedWidth);
-            int y = getYPos(k, reducedHeight);
-            ItemStack stack = new ItemStack(item);
-            RenderHelper.turnBackOn();
-            if (!stack.isEmpty()) {
-                itemRenderer.renderGuiItem(stack, x, y);
-                if (!clickProcessed && isMouseInRange(clickX, clickY, x, y, x+16, y+16)) {
-                    if (selected.contains(item)) selected.remove(item);
-                    else selected.add(item);
-                    clickProcessed = true;
+        Collection<Item> searchingCopy = Lists.newArrayList();
+        Collection<Item> prioritized = searching.stream().filter(item -> {
+            boolean pri = Config.PRIORITIZE.get().contains(item.getRegistryName().toString());
+            if (!pri) searchingCopy.add(item);
+            return pri;
+        }).collect(Collectors.toList());
+        Item[] items = Stream.concat(prioritized.stream(), searchingCopy.stream()).toArray(Item[]::new);
+        if (items.length > 0 && page >= 0) {
+            for (int i = page * max; i < Math.min((page + 1) * max, searching.size()); i++) {
+                Item item = items[i];
+                int h = (i % max) / (max / 30);
+                int k = (i % max) % (max / 30);
+                int x = getXPos(h, reducedWidth);
+                int y = getYPos(k, reducedHeight);
+                ItemStack stack = new ItemStack(item);
+                RenderHelper.turnBackOn();
+                if (!stack.isEmpty()) {
+                    itemRenderer.renderGuiItem(stack, x, y);
+                    if (!clickProcessed && isMouseInRange(clickX, clickY, x, y, x+16, y+16)) {
+                        if (selected.contains(item)) selected.remove(item);
+                        else selected.add(item);
+                        clickProcessed = true;
+                    }
+                    if (selected.contains(item)) fillGradient(matrixStack, x - 2, y - 2, x + 18, y + 18, Color.GREEN.getRGB(), Color.GREEN.getRGB());
+                    else if (isMouseInRange(mouseX, mouseY, x, y,x + 16, y + 16)) fillGradient(matrixStack, x - 2, y - 2, x + 18, y + 18, Color.LIGHT_GRAY.getRGB(), Color.LIGHT_GRAY.getRGB());
+                    if (isMouseInRange(mouseX, mouseY, x, y,x + 16, y + 16)) renderTooltip(matrixStack, stack, mouseX, mouseY);
                 }
-                if (selected.contains(item)) fillGradient(matrixStack, x - 2, y - 2, x + 18, y + 18, Color.GREEN.getRGB(), Color.GREEN.getRGB());
-                else if (isMouseInRange(mouseX, mouseY, x, y,x + 16, y + 16)) fillGradient(matrixStack, x - 2, y - 2, x + 18, y + 18, Color.LIGHT_GRAY.getRGB(), Color.LIGHT_GRAY.getRGB());
-                if (isMouseInRange(mouseX, mouseY, x, y,x + 16, y + 16)) renderTooltip(matrixStack, stack, mouseX, mouseY);
+                RenderHelper.turnOff();
             }
-            RenderHelper.turnOff();
         }
         search.render(matrixStack, mouseX, mouseY, partialTicks);
         super.render(matrixStack, mouseX, mouseY, partialTicks);
