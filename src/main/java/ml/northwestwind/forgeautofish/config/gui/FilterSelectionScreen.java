@@ -1,5 +1,6 @@
 package ml.northwestwind.forgeautofish.config.gui;
 
+import com.google.common.collect.Lists;
 import com.mojang.blaze3d.vertex.PoseStack;
 import ml.northwestwind.forgeautofish.config.Config;
 import net.minecraft.client.Minecraft;
@@ -18,6 +19,7 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class FilterSelectionScreen extends Screen {
     private final Screen parent;
@@ -99,25 +101,32 @@ public class FilterSelectionScreen extends Screen {
     @Override
     public void render(PoseStack PoseStack, int mouseX, int mouseY, float partialTicks) {
         this.renderBackground(PoseStack);
-        drawCenteredString(PoseStack, this.font, this.title, this.width / 2, 20, -1);
-        Item[] items = searching.toArray(new Item[0]);
-        for (int i = page * max; i < Math.min((page + 1) * max, searching.size()); i++) {
-            Item item = items[i];
-            int h = (i % max) / (max / 30);
-            int k = (i % max) % (max / 30);
-            int x = getXPos(h, reducedWidth);
-            int y = getYPos(k, reducedHeight);
-            ItemStack stack = new ItemStack(item);
-            if (!stack.isEmpty()) {
-                itemRenderer.renderGuiItem(stack, x, y);
-                if (!clickProcessed && isMouseInRange(clickX, clickY, x, y, x+16, y+16)) {
-                    if (selected.contains(item)) selected.remove(item);
-                    else selected.add(item);
-                    clickProcessed = true;
+        drawCenteredString(PoseStack, this.font, this.title, this.width / 2, 20, -1);Collection<Item> searchingCopy = Lists.newArrayList();
+        Collection<Item> prioritized = searching.stream().filter(item -> {
+            boolean pri = Config.PRIORITIZE.get().contains(item.getRegistryName().toString());
+            if (!pri) searchingCopy.add(item);
+            return pri;
+        }).collect(Collectors.toList());
+        Item[] items = Stream.concat(prioritized.stream(), searchingCopy.stream()).toArray(Item[]::new);
+        if (items.length > 0 && page >= 0) {
+            for (int i = page * max; i < Math.min((page + 1) * max, searching.size()); i++) {
+                Item item = items[i];
+                int h = (i % max) / (max / 30);
+                int k = (i % max) % (max / 30);
+                int x = getXPos(h, reducedWidth);
+                int y = getYPos(k, reducedHeight);
+                ItemStack stack = new ItemStack(item);
+                if (!stack.isEmpty()) {
+                    itemRenderer.renderGuiItem(stack, x, y);
+                    if (!clickProcessed && isMouseInRange(clickX, clickY, x, y, x+16, y+16)) {
+                        if (selected.contains(item)) selected.remove(item);
+                        else selected.add(item);
+                        clickProcessed = true;
+                    }
+                    if (selected.contains(item)) fillGradient(PoseStack, x - 2, y - 2, x + 18, y + 18, Color.GREEN.getRGB(), Color.GREEN.getRGB());
+                    else if (isMouseInRange(mouseX, mouseY, x, y,x + 16, y + 16)) fillGradient(PoseStack, x - 2, y - 2, x + 18, y + 18, Color.LIGHT_GRAY.getRGB(), Color.LIGHT_GRAY.getRGB());
+                    if (isMouseInRange(mouseX, mouseY, x, y,x + 16, y + 16)) renderTooltip(PoseStack, stack, mouseX, mouseY);
                 }
-                if (selected.contains(item)) fillGradient(PoseStack, x - 2, y - 2, x + 18, y + 18, Color.GREEN.getRGB(), Color.GREEN.getRGB());
-                else if (isMouseInRange(mouseX, mouseY, x, y,x + 16, y + 16)) fillGradient(PoseStack, x - 2, y - 2, x + 18, y + 18, Color.LIGHT_GRAY.getRGB(), Color.LIGHT_GRAY.getRGB());
-                if (isMouseInRange(mouseX, mouseY, x, y,x + 16, y + 16)) renderTooltip(PoseStack, stack, mouseX, mouseY);
             }
         }
         search.render(PoseStack, mouseX, mouseY, partialTicks);
