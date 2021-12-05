@@ -2,7 +2,7 @@ package ml.northwestwind.forgeautofish.keybind;
 
 import net.minecraft.client.KeyMapping;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraftforge.fmlclient.registry.ClientRegistry;
+import net.minecraftforge.client.ClientRegistry;
 import org.lwjgl.glfw.GLFW;
 
 public class KeyBinds {
