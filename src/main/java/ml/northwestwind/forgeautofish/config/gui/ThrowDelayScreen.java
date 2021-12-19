@@ -12,33 +12,33 @@ import org.lwjgl.glfw.GLFW;
 
 import java.util.regex.Pattern;
 
-public class ReelInDelayScreen extends Screen {
+public class ThrowDelayScreen extends Screen {
     private final Screen parent;
-    private EditBox reelInDelay;
+    private EditBox throwDelay;
 
-    protected ReelInDelayScreen(Screen parent) {
-        super(new TranslatableComponent("gui.setreelindelay"));
+    protected ThrowDelayScreen(Screen parent) {
+        super(new TranslatableComponent("gui.setthrowdelay"));
         this.parent = parent;
     }
 
     @Override
     protected void init() {
-        reelInDelay = new EditBox(this.font, this.width / 2 - 75, this.height / 2 - 25, 150, 20, new TranslatableComponent("gui.setreelindelay.reelindelay")) {
+        throwDelay = new EditBox(this.font, this.width / 2 - 75, this.height / 2 - 25, 150, 20, new TranslatableComponent("gui.setthrowdelay.throwdelay")) {
             @Override
             public boolean mouseClicked(double mouseX, double mouseY, int button) {
                 if (button == GLFW.GLFW_MOUSE_BUTTON_2) this.setValue("");
                 return super.mouseClicked(mouseX, mouseY, button);
             }
         };
-        reelInDelay.setValue(Long.toString(AutoFishHandler.reelInDelay));
-        addRenderableWidget(reelInDelay);
-        Button save = new Button(this.width / 2 - 75, this.height / 2, 150, 20, new TranslatableComponent("gui.setreelindelay.save"), button -> {
-            if (!isNumeric(reelInDelay.getValue())) reelInDelay.setValue(Long.toString(AutoFishHandler.recastDelay));
+        throwDelay.setValue(Long.toString(AutoFishHandler.throwDelay));
+        addRenderableWidget(throwDelay);
+        Button save = new Button(this.width / 2 - 75, this.height / 2, 150, 20, new TranslatableComponent("gui.setthrowdelay.save"), button -> {
+            if (!isNumeric(throwDelay.getValue())) throwDelay.setValue(Long.toString(AutoFishHandler.throwDelay));
             else {
-                long delay = Long.parseLong(reelInDelay.getValue());
-                if (delay < Config.REEL_IN_DELAY_RANGE[1] || delay > Config.REEL_IN_DELAY_RANGE[2]) reelInDelay.setValue(Long.toString(AutoFishHandler.reelInDelay));
+                long delay = Long.parseLong(throwDelay.getValue());
+                if (delay < Config.THROW_DELAY_RANGE[1] || delay > Config.THROW_DELAY_RANGE[2]) throwDelay.setValue(Long.toString(AutoFishHandler.throwDelay));
                 else {
-                    Config.setReelInDelay(delay);
+                    Config.setThrowDelay(delay);
                     Minecraft.getInstance().setScreen(parent);
                 }
             }
@@ -48,7 +48,7 @@ public class ReelInDelayScreen extends Screen {
 
     @Override
     public void tick() {
-        reelInDelay.tick();
+        throwDelay.tick();
         super.tick();
     }
 
@@ -64,7 +64,7 @@ public class ReelInDelayScreen extends Screen {
     public void render(PoseStack PoseStack, int mouseX, int mouseY, float partialTicks) {
         this.renderBackground(PoseStack);
         drawCenteredString(PoseStack, this.font, this.title, this.width / 2, 20, -1);
-        this.reelInDelay.render(PoseStack, mouseX, mouseY, partialTicks);
+        this.throwDelay.render(PoseStack, mouseX, mouseY, partialTicks);
         super.render(PoseStack, mouseX, mouseY, partialTicks);
     }
 

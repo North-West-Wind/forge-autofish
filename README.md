@@ -2,7 +2,7 @@
 Finally! An AFK fishing mod for Forge users!
 
 ## Download
-1. Go to the release page [here](https://github.com/North-West-Wind/forge-autofish/releases)
+1. Go to the CurseForge page [here](https://www.curseforge.com/minecraft/mc-mods/autofish-for-forge)
 2. Find the version of the mod you want
 3. Find the Minecraft version of the mod you want
 4. Download
@@ -11,6 +11,7 @@ Finally! An AFK fishing mod for Forge users!
 Thanks for using the mod!
 
 ### Currently supported versions
+1.18.x (Tested with 1.18.1)
 1.17.x (Tested with 1.17.1)
 1.16.x (Tested with 1.16.1, 1.16.4, 1.16.5)
 
@@ -41,7 +42,3 @@ Programmers have probably looked at the source code already, but allow me to exp
 When the mod is enabled, it will look for the bobber of the player. You may think that I look for the state of the bobber but no. The state of the bobber is not public, and there is no public methods that returns the state, so it is impossible to listen for change of state.
 
 However, I found a way simplier method to know if is catch a fish...\*drumroll\* Motion. Since, the bobber is an entity, we can track its motion. As we all know, the bobber sinks into the water when it catches a fish. By tracking the vertical motion of the bobber, we can know when it catches a fish. It is simple as that!
-
-## Future Plans
-1. Port the mod to older versions.
-2. A GUI for whatever reason.

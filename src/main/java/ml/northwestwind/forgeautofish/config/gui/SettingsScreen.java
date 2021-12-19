@@ -2,8 +2,8 @@ package ml.northwestwind.forgeautofish.config.gui;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.TranslatableComponent;
 
 public class SettingsScreen extends Screen {
@@ -24,6 +24,8 @@ public class SettingsScreen extends Screen {
         addRenderableWidget(reelInDelay);
         Button filter = new Button(this.width / 2 - 75, this.height / 2 + 10, 150, 20, new TranslatableComponent("gui.forgeautofish.filter"), button -> Minecraft.getInstance().setScreen(new SuperFilterScreen(this)));
         addRenderableWidget(filter);
+        Button throwDelay = new Button(this.width / 2 - 75, this.height / 2 + 35, 150, 20, new TranslatableComponent("gui.forgeautofish.throwdelay"), button -> Minecraft.getInstance().setScreen(new ThrowDelayScreen(this)));
+        addRenderableWidget(throwDelay);
         Button done = new Button(this.width / 2 - 75, this.height - 25, 150, 20, new TranslatableComponent("gui.forgeautofish.done"), button -> onClose());
         addRenderableWidget(done);
     }

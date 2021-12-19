@@ -7,11 +7,7 @@ import org.lwjgl.glfw.GLFW;
 
 public class KeyBinds {
 
-    public static KeyMapping autofish;
-    public static KeyMapping rodprotect;
-    public static KeyMapping autoreplace;
-    public static KeyMapping settings;
-    public static KeyMapping itemfilter;
+    public static KeyMapping autofish, rodprotect, autoreplace, settings, itemfilter;
 
     public static void register() {
         autofish = new KeyMapping(new TranslatableComponent("key.forgeautofish.autofish").getString(), GLFW.GLFW_KEY_MINUS, "key.categories.forgeautofish");
