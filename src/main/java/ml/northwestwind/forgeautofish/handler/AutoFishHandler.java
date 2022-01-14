@@ -9,12 +9,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.multiplayer.PlayerController;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.ClickType;
 import net.minecraft.item.FishingRodItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
@@ -28,6 +28,7 @@ import net.minecraftforge.event.entity.player.ItemFishedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -37,19 +38,11 @@ public class AutoFishHandler {
     public static boolean autofish = Config.AUTO_FISH.get(), rodprotect = Config.ROD_PROTECT.get(), autoreplace = Config.AUTO_REPLACE.get(), itemfilter = Config.ALL_FILTERS.get();
     public static long recastDelay = Config.RECAST_DELAY.get(), reelInDelay = Config.REEL_IN_DELAY.get();
     private static final List<Item> shouldDrop = Lists.newArrayList();
-    private static boolean processingDrop;
-    private static boolean pendingReelIn;
-    private static boolean pendingRecast;
+    private static boolean processingDrop, pendingReelIn, pendingRecast, lastTickFishing, afterDrop;
+    private static int dropCd;
     private static long tick;
-
-    @SubscribeEvent
-    public static void onItemFished(final ItemFishedEvent event) {
-        if (!itemfilter) return;
-        List<ItemStack> stacks = event.getDrops();
-        for (ItemStack stack : stacks)
-            if (Config.FILTER.get().contains(stack.getItem().getRegistryName().toString()))
-                shouldDrop.add(stack.getItem());
-    }
+    private static List<ItemStack> itemsBeforeFished;
+    private static ItemStack rodStack;
 
     @SubscribeEvent
     public static void onKeyInput(InputEvent.KeyInputEvent e) {
@@ -77,6 +70,21 @@ public class AutoFishHandler {
         if (e.side != LogicalSide.CLIENT || !e.phase.equals(TickEvent.Phase.START)) return;
         PlayerEntity player = e.player;
         if (!player.getUUID().equals(Minecraft.getInstance().player.getUUID())) return;
+        if (lastTickFishing && player.fishing == null)
+            itemsBeforeFished = Lists.newArrayList(player.inventory.items);
+        lastTickFishing = player.fishing != null;
+        if (afterDrop) {
+            if (tick == 0 && rodStack != null) {
+                player.inventory.setPickedItem(rodStack);
+                rodStack = null;
+            }
+            tick++;
+            if (tick > 2) {
+                afterDrop = false;
+                tick = 0;
+            }
+            return;
+        }
         if (pendingReelIn) {
             tick++;
             if (tick >= reelInDelay) {
@@ -86,20 +94,30 @@ public class AutoFishHandler {
             }
             return;
         }
+        if (processingDrop) {
+            if (dropCd > 0) dropCd--;
+            dropItem(player);
+            if (shouldDrop.size() <= 0) {
+                processingDrop = false;
+                afterDrop = true;
+            }
+            return;
+        }
         if (pendingRecast) {
             tick++;
             if (tick >= recastDelay) {
+                checkItem(player);
+                if (processingDrop) {
+                    tick = 0;
+                    return;
+                }
                 recast(player);
                 tick = 0;
                 pendingRecast = false;
             }
             return;
         }
-        if (shouldDrop.size() > 0 && !processingDrop) {
-            dropItem(player);
-            return;
-        }
-        if (!autofish || processingDrop || player.fishing == null) return;
+        if (!autofish || player.fishing == null) return;
         Vector3d vector = player.fishing.getDeltaMovement();
         double x = vector.x();
         double y = vector.y();
@@ -153,26 +171,41 @@ public class AutoFishHandler {
         click(player.level, player, hand, Minecraft.getInstance().gameMode);
     }
 
-    private static void dropItem(PlayerEntity player) {
-        PlayerController playerController = Minecraft.getInstance().gameMode;
-        if (playerController == null) {
-            shouldDrop.clear();
-            return;
-        }
-        processingDrop = true;
-        List<Item> shouldRemove = Lists.newArrayList();
-        for (final Item item : shouldDrop) {
-            for (final ItemStack stack : player.inventory.items) {
-                if (!stack.getItem().equals(item)) continue;
-                if (player.inventory.findSlotMatchingItem(stack) == player.inventory.selected) continue;
-                int slot = player.inventory.findSlotMatchingItem(stack);
-                playerController.handleInventoryMouseClick(player.containerMenu.containerId, slot, 0, ClickType.THROW, player);
-
-                shouldRemove.add(item);
+    private static void checkItem(PlayerEntity player) {
+        if (itemsBeforeFished != null) {
+            List<ItemStack> items = player.inventory.items;
+            for (String name : Config.FILTER.get()) {
+                ResourceLocation rl = new ResourceLocation(name);
+                Item item = ForgeRegistries.ITEMS.getValue(rl);
+                if (item == null) continue;
+                int newCount = items.stream().filter(stack -> stack.getItem().equals(item)).mapToInt(ItemStack::getCount).reduce(Integer::sum).orElse(0);
+                int oldCount = itemsBeforeFished.stream().filter(stack -> stack.getItem().equals(item)).mapToInt(ItemStack::getCount).reduce(Integer::sum).orElse(0);
+                int diff = newCount - oldCount;
+                for (int ii = 0; ii < diff; ii++) shouldDrop.add(item);
+            }
+            itemsBeforeFished = null;
+            if (shouldDrop.size() > 0) {
+                processingDrop = true;
+                rodStack = player.getMainHandItem();
             }
         }
-        shouldDrop.removeAll(shouldRemove);
-        processingDrop = false;
+    }
+
+    private static void dropItem(PlayerEntity player) {
+        if (dropCd == 4 || dropCd == 2 || dropCd == 1) return;
+        Item item = shouldDrop.get(0);
+        if (dropCd == 3) {
+            ((ClientPlayerEntity) player).drop(false);
+            shouldDrop.remove(item);
+            return;
+        }
+        for (int ii = 0; ii < 9; ii++) {
+            final ItemStack stack = player.inventory.items.get(ii);
+            if (!stack.getItem().equals(item)) continue;
+            player.inventory.setPickedItem(stack);
+            dropCd = 5;
+            break;
+        }
     }
 
     private static void click(World world, PlayerEntity player, Hand hand, @Nullable PlayerController controller) {
