@@ -10,9 +10,11 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.tags.IReverseTag;
 import org.lwjgl.glfw.GLFW;
 
 import java.awt.*;
@@ -64,10 +66,12 @@ public class FilterSelectionScreen extends Screen {
                     mod = mod.toLowerCase().substring(1);
                     matchmod = item.getRegistryName().getNamespace().toLowerCase().contains(mod);
                 }
-                for (String tag : tags) {
-                    String finalTag = tag.toLowerCase().substring(1);
-                    matchtag = item.getTags().stream().anyMatch(registryName -> registryName.getPath().contains(finalTag));
-                }
+                Optional<IReverseTag<Item>> reverseTagsOptional = ForgeRegistries.ITEMS.tags().getReverseTag(item);
+                if (reverseTagsOptional.isPresent())
+                    for (String tag : tags) {
+                        String finalTag = tag.toLowerCase().substring(1);
+                        matchtag = reverseTagsOptional.get().getTagKeys().anyMatch(tagKey -> tagKey.location().getPath().contains(finalTag));
+                    }
                 for (String arg : finalArgs) {
                     arg = arg.toLowerCase();
                     matcharg = item.getRegistryName().getPath().contains(arg) || item.getDescription().getString().contains(arg);
