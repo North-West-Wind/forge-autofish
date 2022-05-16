@@ -11,7 +11,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '4.0.1'
+version = '4.1.0'
 group = 'ml.northwestwind.forgeautofish'
 archivesBaseName = 'forgeautofish'
 
@@ -63,12 +63,12 @@ minecraft {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.18.1-39.0.0'
+    minecraft 'net.minecraftforge:forge:1.18.1-39.1.2'
 }
 
 jar {
     manifest {
-        classifier = "1.18.x"
+        classifier = "1.18.1"
         attributes([
             "Specification-Title": "forgeautofish",
             "Specification-Vendor": "forgeautofish",
