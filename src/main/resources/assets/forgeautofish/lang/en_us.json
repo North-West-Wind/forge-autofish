@@ -16,12 +16,26 @@
   "gui.forgeautofish": "AutoFish Configuration",
   "gui.forgeautofish.reelindelay": "Reel-In Delay",
   "gui.forgeautofish.recastdelay": "Recast Delay",
+  "gui.forgeautofish.throwdelay": "Throw Delay",
+  "gui.forgeautofish.checkinterval": "Check Interval",
   "gui.forgeautofish.filter": "Item Filter",
   "gui.forgeautofish.done": "Done",
+
+  "gui.setreelindelay": "Set Reel-In Delay",
+  "gui.setreelindelay.reelindelay": "Reel-In Delay",
+  "gui.setreelindelay.save": "Save Reel-In Delay",
 
   "gui.setrecastdelay": "Set Recast Delay",
   "gui.setrecastdelay.recastdelay": "Recast Delay",
   "gui.setrecastdelay.save": "Save Recast Delay",
+
+  "gui.setthrowdelay": "Set Throw Delay",
+  "gui.setthrowdelay.throwdelay": "Throw Delay",
+  "gui.setthrowdelay.save": "Save Throw Delay",
+
+  "gui.setcheckinterval": "Set Check Interval",
+  "gui.setcheckinterval.checkinterval": "Check Interval",
+  "gui.setcheckinterval.save": "Save Check Interval",
 
   "gui.superfilterscreen": "Super Item Filter",
   "gui.superfilterscreen.openfilter": "Config",
@@ -31,10 +45,6 @@
   "gui.filterselection": "Item Filter Configuration",
   "gui.filterselection.save": "Save",
   "gui.filterselection.cancel": "Cancel",
-
-  "gui.setreelindelay": "Set Reel-In Delay",
-  "gui.setreelindelay.reelindelay": "Reel-In Delay",
-  "gui.setreelindelay.save": "Save Reel-In Delay",
 
   "toggle.enable.true": "Enabled",
   "toggle.enable.false": "Disabled"

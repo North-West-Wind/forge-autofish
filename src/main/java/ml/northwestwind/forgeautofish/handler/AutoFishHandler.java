@@ -33,11 +33,11 @@ import java.util.List;
 @Mod.EventBusSubscriber(modid = AutoFish.MODID, value = Dist.CLIENT)
 public class AutoFishHandler {
     public static boolean autofish = Config.AUTO_FISH.get(), rodprotect = Config.ROD_PROTECT.get(), autoreplace = Config.AUTO_REPLACE.get(), itemfilter = Config.ALL_FILTERS.get();
-    public static long recastDelay = Config.RECAST_DELAY.get(), reelInDelay = Config.REEL_IN_DELAY.get(), throwDelay = Config.THROW_DELAY.get();
+    public static long recastDelay = Config.RECAST_DELAY.get(), reelInDelay = Config.REEL_IN_DELAY.get(), throwDelay = Config.THROW_DELAY.get(), checkInterval = Config.CHECK_INTERVAL.get();
     private static final List<Item> shouldDrop = Lists.newArrayList();
     private static boolean processingDrop, pendingReelIn, pendingRecast, lastTickFishing, afterDrop;
     private static int dropCd;
-    private static long tick;
+    private static long tick, checkTick;
     private static List<ItemStack> itemsBeforeFished;
     private static ItemStack rodStack;
 
@@ -67,6 +67,11 @@ public class AutoFishHandler {
         if (e.side != LogicalSide.CLIENT || !e.phase.equals(TickEvent.Phase.START)) return;
         Player player = e.player;
         if (!player.getUUID().equals(Minecraft.getInstance().player.getUUID())) return;
+        if (checkTick > 0) checkTick--;
+        else {
+            checkTick = checkInterval;
+            if (!pendingRecast && player.fishing == null) recast(player);
+        }
         if (lastTickFishing && player.fishing == null)
             itemsBeforeFished = Lists.newArrayList(player.getInventory().items);
         lastTickFishing = player.fishing != null;

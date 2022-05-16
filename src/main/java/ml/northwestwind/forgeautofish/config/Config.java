@@ -15,11 +15,12 @@ public class Config {
     public static final long[] RECAST_DELAY_RANGE = { 20L, 1L, 600L };
     public static final long[] REEL_IN_DELAY_RANGE = { 0L, 0L, 600L };
     public static final long[] THROW_DELAY_RANGE = { 10L, 5L, 600L };
+    public static final long[] CHECK_INTERVAL_RANGE = { 200L, 20L, 72000L };
 
     private static final ForgeConfigSpec.Builder CLIENT_BUILDER = new ForgeConfigSpec.Builder();
     public static final ForgeConfigSpec CLIENT;
 
-    public static ForgeConfigSpec.LongValue RECAST_DELAY, REEL_IN_DELAY, THROW_DELAY;
+    public static ForgeConfigSpec.LongValue RECAST_DELAY, REEL_IN_DELAY, THROW_DELAY, CHECK_INTERVAL;
     public static ForgeConfigSpec.BooleanValue AUTO_FISH, ROD_PROTECT, AUTO_REPLACE, ALL_FILTERS;
     public static ForgeConfigSpec.ConfigValue<List<String>> FILTER, PRIORITIZE;
 
@@ -38,6 +39,7 @@ public class Config {
         RECAST_DELAY = CLIENT_BUILDER.comment("Sets the delay before casting the fishing rod again (in ticks).", "Minimum is 1 tick to allow Auto Replace to take effect.").defineInRange("forgeautofish.recastdelay", RECAST_DELAY_RANGE[0], RECAST_DELAY_RANGE[1], RECAST_DELAY_RANGE[2]);
         REEL_IN_DELAY = CLIENT_BUILDER.comment("Sets the delay before reeling in the fishing rod after catching a fish (in ticks).").defineInRange("forgeautofish.reelindelay", REEL_IN_DELAY_RANGE[0], REEL_IN_DELAY_RANGE[1], REEL_IN_DELAY_RANGE[2]);
         THROW_DELAY = CLIENT_BUILDER.comment("Sets the delay between each item throw in filtering (in ticks).").defineInRange("forgeautofish.throwdelay", THROW_DELAY_RANGE[0], THROW_DELAY_RANGE[1], THROW_DELAY_RANGE[2]);
+        CHECK_INTERVAL = CLIENT_BUILDER.comment("Sets the interval for checking if the rod is thrown (in ticks).", "If not, throw it.").defineInRange("forgeautofish.checkinterval", CHECK_INTERVAL_RANGE[0], CHECK_INTERVAL_RANGE[1], CHECK_INTERVAL_RANGE[2]);
         AUTO_FISH = CLIENT_BUILDER.comment("Sets the default status of the Auto Fish feature").define("forgeautofish.autofish", true);
         ROD_PROTECT = CLIENT_BUILDER.comment("Sets whether should the mod be turned off when the fishing rod is about to break.").define("forgeautofish.rodprotect", true);
         AUTO_REPLACE = CLIENT_BUILDER.comment("Does nothing currently").define("forgeautofish.autoreplace", true);
@@ -99,5 +101,12 @@ public class Config {
         Config.THROW_DELAY.set(throwDelay);
         Config.THROW_DELAY.save();
         AutoFish.LOGGER.info("Set Throw Delay: " + throwDelay);
+    }
+
+    public static void setCheckInterval(long checkInterval) {
+        AutoFishHandler.checkInterval = checkInterval;
+        Config.CHECK_INTERVAL.set(checkInterval);
+        Config.CHECK_INTERVAL.save();
+        AutoFish.LOGGER.info("Set Check Interval: " + checkInterval);
     }
 }

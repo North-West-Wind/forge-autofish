@@ -18,14 +18,16 @@ public class SettingsScreen extends Screen {
 
     @Override
     protected void init() {
-        Button recastDelay = new Button(this.width / 2 - 75, this.height / 2 - 40, 150, 20, new TranslatableComponent("gui.forgeautofish.recastdelay"), button -> Minecraft.getInstance().setScreen(new RecastDelayScreen(this)));
+        Button recastDelay = new Button(this.width / 2 - 75, this.height / 2 - 50, 150, 20, new TranslatableComponent("gui.forgeautofish.recastdelay"), button -> Minecraft.getInstance().setScreen(new RecastDelayScreen(this)));
         addRenderableWidget(recastDelay);
-        Button reelInDelay = new Button(this.width / 2 - 75, this.height / 2 - 15, 150, 20, new TranslatableComponent("gui.forgeautofish.reelindelay"), button -> Minecraft.getInstance().setScreen(new ReelInDelayScreen(this)));
+        Button reelInDelay = new Button(this.width / 2 - 75, this.height / 2 - 25, 150, 20, new TranslatableComponent("gui.forgeautofish.reelindelay"), button -> Minecraft.getInstance().setScreen(new ReelInDelayScreen(this)));
         addRenderableWidget(reelInDelay);
-        Button filter = new Button(this.width / 2 - 75, this.height / 2 + 10, 150, 20, new TranslatableComponent("gui.forgeautofish.filter"), button -> Minecraft.getInstance().setScreen(new SuperFilterScreen(this)));
-        addRenderableWidget(filter);
-        Button throwDelay = new Button(this.width / 2 - 75, this.height / 2 + 35, 150, 20, new TranslatableComponent("gui.forgeautofish.throwdelay"), button -> Minecraft.getInstance().setScreen(new ThrowDelayScreen(this)));
+        Button throwDelay = new Button(this.width / 2 - 75, this.height / 2, 150, 20, new TranslatableComponent("gui.forgeautofish.throwdelay"), button -> Minecraft.getInstance().setScreen(new ThrowDelayScreen(this)));
         addRenderableWidget(throwDelay);
+        Button checkInterval = new Button(this.width / 2 - 75, this.height / 2 + 25, 150, 20, new TranslatableComponent("gui.forgeautofish.checkinterval"), button -> Minecraft.getInstance().setScreen(new CheckIntervalScreen(this)));
+        addRenderableWidget(checkInterval);
+        Button filter = new Button(this.width / 2 - 75, this.height / 2 + 50, 150, 20, new TranslatableComponent("gui.forgeautofish.filter"), button -> Minecraft.getInstance().setScreen(new SuperFilterScreen(this)));
+        addRenderableWidget(filter);
         Button done = new Button(this.width / 2 - 75, this.height - 25, 150, 20, new TranslatableComponent("gui.forgeautofish.done"), button -> onClose());
         addRenderableWidget(done);
     }
