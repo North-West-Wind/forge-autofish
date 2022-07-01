@@ -4,12 +4,14 @@
   "key.forgeautofish.autoreplace": "Toggle Auto Replace",
   "key.forgeautofish.settings": "Open Settings",
   "key.forgeautofish.itemfilter": "Toggle Item Filter",
+  "key.forgeautofish.soundfishing": "Toggle Sound Fishing",
   "key.categories.forgeautofish": "AutoFish for Forge",
 
   "toggle.forgeautofish": "%s AutoFish",
   "toggle.rodprotect": "%s Fishing Rod Protection",
   "toggle.autoreplace": "%s Auto Replace",
   "toggle.itemfilter": "%s Item Filter",
+  "toggle.soundfishing": "%s Sound Fishing",
 
   "warning.autoreplace": "Auto Replace Coming Soon",
 
@@ -19,6 +21,7 @@
   "gui.forgeautofish.throwdelay": "Throw Delay",
   "gui.forgeautofish.checkinterval": "Check Interval",
   "gui.forgeautofish.filter": "Item Filter",
+  "gui.forgeautofish.soundfishing": "Sound Fishing",
   "gui.forgeautofish.done": "Done",
 
   "gui.setreelindelay": "Set Reel-In Delay",
@@ -45,6 +48,11 @@
   "gui.filterselection": "Item Filter Configuration",
   "gui.filterselection.save": "Save",
   "gui.filterselection.cancel": "Cancel",
+
+  "gui.supersoundscreen": "Super Sound fishing",
+  "gui.supersoundscreen.openfilter": "Config",
+  "gui.supersoundscreen.search": "Search",
+  "gui.supersoundscreen.done": "Done",
 
   "toggle.enable.true": "Enabled",
   "toggle.enable.false": "Disabled"

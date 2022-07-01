@@ -32,7 +32,7 @@ import java.util.List;
 
 @Mod.EventBusSubscriber(modid = AutoFish.MODID, value = Dist.CLIENT)
 public class AutoFishHandler {
-    public static boolean autofish = Config.AUTO_FISH.get(), rodprotect = Config.ROD_PROTECT.get(), autoreplace = Config.AUTO_REPLACE.get(), itemfilter = Config.ALL_FILTERS.get();
+    public static boolean autofish = Config.AUTO_FISH.get(), rodprotect = Config.ROD_PROTECT.get(), autoreplace = Config.AUTO_REPLACE.get(), itemfilter = Config.ALL_FILTERS.get(), soundFishing = Config.SOUND_FISHING.get();
     public static long recastDelay = Config.RECAST_DELAY.get(), reelInDelay = Config.REEL_IN_DELAY.get(), throwDelay = Config.THROW_DELAY.get(), checkInterval = Config.CHECK_INTERVAL.get();
     private static final List<Item> shouldDrop = Lists.newArrayList();
     private static boolean processingDrop, pendingReelIn, pendingRecast, lastTickFishing, afterDrop;
@@ -58,6 +58,10 @@ public class AutoFishHandler {
             Config.enableFilter(!itemfilter);
             if (player != null)
                 player.displayClientMessage(getText("itemfilter", itemfilter), true);
+        } else if (KeyBinds.soundfishing.consumeClick()) {
+            Config.enableSoundFishing(!soundFishing);
+            if (player != null)
+                player.displayClientMessage(getText("soundfishing", soundFishing), true);
         } else if (KeyBinds.settings.consumeClick())
             minecraft.setScreen(new SettingsScreen());
     }

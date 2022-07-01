@@ -7,7 +7,7 @@ import org.lwjgl.glfw.GLFW;
 
 public class KeyBinds {
 
-    public static KeyMapping autofish, rodprotect, autoreplace, settings, itemfilter;
+    public static KeyMapping autofish, rodprotect, autoreplace, settings, itemfilter, soundfishing;
 
     public static void register() {
         autofish = new KeyMapping(new TranslatableComponent("key.forgeautofish.autofish").getString(), GLFW.GLFW_KEY_MINUS, "key.categories.forgeautofish");
@@ -15,11 +15,13 @@ public class KeyBinds {
         autoreplace = new KeyMapping(new TranslatableComponent("key.forgeautofish.autoreplace").getString(), GLFW.GLFW_KEY_RIGHT_BRACKET, "key.categories.forgeautofish");
         settings = new KeyMapping(new TranslatableComponent("key.forgeautofish.settings").getString(), GLFW.GLFW_KEY_K, "key.categories.forgeautofish");
         itemfilter = new KeyMapping(new TranslatableComponent("key.forgeautofish.itemfilter").getString(), GLFW.GLFW_KEY_APOSTROPHE, "key.categories.forgeautofish");
+        soundfishing = new KeyMapping(new TranslatableComponent("key.forgeautofish.soundfishing").getString(), GLFW.GLFW_KEY_LEFT_BRACKET, "key.categories.forgeautofish");
 
         ClientRegistry.registerKeyBinding(autofish);
         ClientRegistry.registerKeyBinding(rodprotect);
         ClientRegistry.registerKeyBinding(autoreplace);
         ClientRegistry.registerKeyBinding(settings);
         ClientRegistry.registerKeyBinding(itemfilter);
+        ClientRegistry.registerKeyBinding(soundfishing);
     }
 }
