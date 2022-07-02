@@ -2,15 +2,13 @@ package ml.northwestwind.forgeautofish.config.gui;
 
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.vertex.PoseStack;
+import ml.northwestwind.forgeautofish.AutoFish;
 import ml.northwestwind.forgeautofish.config.Config;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -37,7 +35,7 @@ public class FilterSelectionScreen extends Screen {
     int reducedWidth;
 
     public FilterSelectionScreen(Screen parent) {
-        super(new TranslatableComponent("gui.filterselection"));
+        super(AutoFish.getTranslatableComponent("gui.filterselection"));
         this.parent = parent;
     }
 
@@ -48,7 +46,7 @@ public class FilterSelectionScreen extends Screen {
         max = /* (int) Math.round(300 * (reducedWidth / 550.0 + reducedHeight / 330.0) / 2.0) */ 300;
         maxPage = (int) Math.ceil(original.size() / (double) max);
         searching = original;
-        search = new EditBox(this.font, this.width / 2 - 75, 35, 150, 20, new TranslatableComponent("gui.superfilterscreen.search")) {
+        search = new EditBox(this.font, this.width / 2 - 75, 35, 150, 20, AutoFish.getTranslatableComponent("gui.superfilterscreen.search")) {
             @Override
             public boolean mouseClicked(double mouseX, double mouseY, int button) {
                 if (button == GLFW.GLFW_MOUSE_BUTTON_2) this.setValue("");
@@ -61,10 +59,11 @@ public class FilterSelectionScreen extends Screen {
             String[] tags = Arrays.stream(args).filter(s1 -> s1.startsWith("#")).toArray(String[]::new);
             String[] finalArgs = Arrays.stream(args).filter(s1 -> !s1.startsWith("@") && !s1.startsWith("#")).toArray(String[]::new);;
             searching = original.stream().filter(item -> {
+                ResourceLocation rl = ForgeRegistries.ITEMS.getKey(item);
                 boolean matchmod = mods.length < 1, matchtag = tags.length < 1, matcharg = finalArgs.length < 1;
                 for (String mod : mods) {
                     mod = mod.toLowerCase().substring(1);
-                    matchmod = item.getRegistryName().getNamespace().toLowerCase().contains(mod);
+                    if (rl != null) matchmod = rl.getNamespace().toLowerCase().contains(mod);
                 }
                 Optional<IReverseTag<Item>> reverseTagsOptional = ForgeRegistries.ITEMS.tags().getReverseTag(item);
                 if (reverseTagsOptional.isPresent())
@@ -74,7 +73,7 @@ public class FilterSelectionScreen extends Screen {
                     }
                 for (String arg : finalArgs) {
                     arg = arg.toLowerCase();
-                    matcharg = item.getRegistryName().getPath().contains(arg) || item.getDescription().getString().contains(arg);
+                    if (rl != null) matcharg = rl.getPath().contains(arg) || item.getDescription().getString().contains(arg);
                 }
                 return matchmod && matchtag && matcharg;
             }).collect(Collectors.toList());
@@ -82,20 +81,20 @@ public class FilterSelectionScreen extends Screen {
             if (page > maxPage - 1) page = maxPage - 1;
         });
         addRenderableWidget(search);
-        Button add = new Button(this.width / 2 - 75, 60, 72, 20, new TranslatableComponent("gui.filterselection.save"), button -> {
-            List<String> items = selected.stream().map(item -> item.getRegistryName().toString()).collect(Collectors.toList());
+        Button add = new Button(this.width / 2 - 75, 60, 72, 20, AutoFish.getTranslatableComponent("gui.filterselection.save"), button -> {
+            List<String> items = selected.stream().map(item -> Objects.requireNonNullElse(ForgeRegistries.ITEMS.getKey(item), item).toString()).collect(Collectors.toList());
             Config.setFILTER(items);
             Minecraft.getInstance().setScreen(parent);
         });
         addRenderableWidget(add);
-        Button done = new Button(this.width / 2 + 3, 60, 72, 20, new TranslatableComponent("gui.filterselection.cancel"), button -> Minecraft.getInstance().setScreen(parent));
+        Button done = new Button(this.width / 2 + 3, 60, 72, 20, AutoFish.getTranslatableComponent("gui.filterselection.cancel"), button -> Minecraft.getInstance().setScreen(parent));
         addRenderableWidget(done);
-        previous = new Button(this.width / 2 - 100, 60, 20, 20, new TextComponent("<"), button -> {
+        previous = new Button(this.width / 2 - 100, 60, 20, 20, AutoFish.getLiteralComponent("<"), button -> {
             if (page > 0) page--;
         });
         previous.visible = false;
         addRenderableWidget(previous);
-        next = new Button(this.width / 2 + 80, 60, 20, 20, new TextComponent(">"), button -> {
+        next = new Button(this.width / 2 + 80, 60, 20, 20, AutoFish.getLiteralComponent(">"), button -> {
             if (page < maxPage - 1) page++;
         });
         next.visible = false;
@@ -107,7 +106,9 @@ public class FilterSelectionScreen extends Screen {
         this.renderBackground(PoseStack);
         drawCenteredString(PoseStack, this.font, this.title, this.width / 2, 20, -1);Collection<Item> searchingCopy = Lists.newArrayList();
         Collection<Item> prioritized = searching.stream().filter(item -> {
-            boolean pri = Config.PRIORITIZE.get().contains(item.getRegistryName().toString());
+            ResourceLocation rl = ForgeRegistries.ITEMS.getKey(item);
+            if (rl == null) return false;
+            boolean pri = Config.PRIORITIZE.get().contains(rl.toString());
             if (!pri) searchingCopy.add(item);
             return pri;
         }).collect(Collectors.toList());

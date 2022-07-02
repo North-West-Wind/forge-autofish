@@ -1,13 +1,13 @@
 package ml.northwestwind.forgeautofish.config.gui;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import ml.northwestwind.forgeautofish.AutoFish;
 import ml.northwestwind.forgeautofish.config.Config;
 import ml.northwestwind.forgeautofish.handler.AutoFishHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.network.chat.TranslatableComponent;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.regex.Pattern;
@@ -17,13 +17,13 @@ public class ThrowDelayScreen extends Screen {
     private EditBox throwDelay;
 
     protected ThrowDelayScreen(Screen parent) {
-        super(new TranslatableComponent("gui.setthrowdelay"));
+        super(AutoFish.getTranslatableComponent("gui.setthrowdelay"));
         this.parent = parent;
     }
 
     @Override
     protected void init() {
-        throwDelay = new EditBox(this.font, this.width / 2 - 75, this.height / 2 - 25, 150, 20, new TranslatableComponent("gui.setthrowdelay.throwdelay")) {
+        throwDelay = new EditBox(this.font, this.width / 2 - 75, this.height / 2 - 25, 150, 20, AutoFish.getTranslatableComponent("gui.setthrowdelay.throwdelay")) {
             @Override
             public boolean mouseClicked(double mouseX, double mouseY, int button) {
                 if (button == GLFW.GLFW_MOUSE_BUTTON_2) this.setValue("");
@@ -32,7 +32,7 @@ public class ThrowDelayScreen extends Screen {
         };
         throwDelay.setValue(Long.toString(AutoFishHandler.throwDelay));
         addRenderableWidget(throwDelay);
-        Button save = new Button(this.width / 2 - 75, this.height / 2, 150, 20, new TranslatableComponent("gui.setthrowdelay.save"), button -> {
+        Button save = new Button(this.width / 2 - 75, this.height / 2, 150, 20, AutoFish.getTranslatableComponent("gui.setthrowdelay.save"), button -> {
             if (!isNumeric(throwDelay.getValue())) throwDelay.setValue(Long.toString(AutoFishHandler.throwDelay));
             else {
                 long delay = Long.parseLong(throwDelay.getValue());

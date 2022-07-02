@@ -2,6 +2,10 @@ package ml.northwestwind.forgeautofish;
 
 import ml.northwestwind.forgeautofish.config.Config;
 import ml.northwestwind.forgeautofish.keybind.KeyBinds;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.contents.LiteralContents;
+import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraftforge.fml.IExtensionPoint;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
@@ -29,5 +33,13 @@ public class AutoFish
 
     private void doClientStuff(final FMLClientSetupEvent event) {
         KeyBinds.register();
+    }
+
+    public static MutableComponent getTranslatableComponent(String key, Object... args) {
+        return MutableComponent.create(new TranslatableContents(key, args));
+    }
+
+    public static MutableComponent getLiteralComponent(String str) {
+        return MutableComponent.create(new LiteralContents(str));
     }
 }
