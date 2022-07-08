@@ -206,8 +206,10 @@ public class AutoFishHandler {
             if (!stack.getItem().equals(item)) continue;
             player.getInventory().setPickedItem(stack);
             dropCd = 5;
-            break;
+            return;
         }
+        // if item cannot be found in hotbar, just ignore it
+        shouldDrop.remove(item);
     }
 
     private static void click(Level world, Player player, InteractionHand hand, @Nullable MultiPlayerGameMode controller) {
