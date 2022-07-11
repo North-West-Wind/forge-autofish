@@ -42,7 +42,7 @@ public class AutoFishHandler {
     private static ItemStack rodStack;
 
     @SubscribeEvent
-    public static void onKeyInput(InputEvent.KeyInputEvent e) {
+    public static void onKeyInput(InputEvent.Key e) {
         Minecraft minecraft = Minecraft.getInstance();
         LocalPlayer player = minecraft.player;
         if (KeyBinds.autofish.consumeClick()) {
