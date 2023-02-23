@@ -1,11 +1,11 @@
 modLoader="javafml"
-loaderVersion="[41,)"
+loaderVersion="[44,)"
 issueTrackerURL="https://github.com/North-West-Wind/forge-autofish/issues"
 license="GPL v3"
 
 [[mods]]
 modId="forgeautofish"
-version="5.0.2"
+version="5.0.3"
 displayName="AutoFish for Forge"
 updateJSONURL="https://raw.githubusercontent.com/North-West-Wind/forge-autofish/master/update.json"
 displayURL="https://github.com/North-West-Wind/forge-autofish/"
@@ -23,13 +23,13 @@ Note that this is my first mod, so there might be bugs.
 [[dependencies.forgeautofish]]
     modId="forge"
     mandatory=true
-    versionRange="[41,)"
+    versionRange="[44,)"
     ordering="NONE"
     side="BOTH"
     
 [[dependencies.forgeautofish]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.19,1.20)"
+    versionRange="[1.19.3,1.20)"
     ordering="NONE"
     side="BOTH"

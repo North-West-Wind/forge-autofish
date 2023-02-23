@@ -8,8 +8,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.contents.TranslatableContents;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.regex.Pattern;
@@ -34,7 +32,7 @@ public class CheckIntervalScreen extends Screen {
         };
         checkInterval.setValue(Long.toString(AutoFishHandler.checkInterval));
         addRenderableWidget(checkInterval);
-        Button save = new Button(this.width / 2 - 75, this.height / 2, 150, 20, AutoFish.getTranslatableComponent("gui.setcheckinterval.save"), button -> {
+        Button save = new Button.Builder(AutoFish.getTranslatableComponent("gui.setcheckinterval.save"), button -> {
             if (!isNumeric(checkInterval.getValue())) checkInterval.setValue(Long.toString(AutoFishHandler.checkInterval));
             else {
                 long delay = Long.parseLong(checkInterval.getValue());
@@ -44,7 +42,7 @@ public class CheckIntervalScreen extends Screen {
                     Minecraft.getInstance().setScreen(parent);
                 }
             }
-        });
+        }).pos(this.width / 2 - 75, this.height / 2).size(150, 20).build();
         addRenderableWidget(save);
     }
 
