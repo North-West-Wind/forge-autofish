@@ -8,6 +8,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.contents.TranslatableContents;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.regex.Pattern;
@@ -32,7 +34,7 @@ public class RecastDelayScreen extends Screen {
         };
         recastDelay.setValue(Long.toString(AutoFishHandler.recastDelay));
         addRenderableWidget(recastDelay);
-        Button save = new Button.Builder(AutoFish.getTranslatableComponent("gui.setrecastdelay.save"), button -> {
+        Button save = new Button(this.width / 2 - 75, this.height / 2, 150, 20, AutoFish.getTranslatableComponent("gui.setrecastdelay.save"), button -> {
             if (!isNumeric(recastDelay.getValue())) recastDelay.setValue(Long.toString(AutoFishHandler.recastDelay));
             else {
                 long delay = Long.parseLong(recastDelay.getValue());
@@ -42,7 +44,7 @@ public class RecastDelayScreen extends Screen {
                     Minecraft.getInstance().setScreen(parent);
                 }
             }
-        }).pos(this.width / 2 - 75, this.height / 2).size(150, 20).build();
+        });
         addRenderableWidget(save);
     }
 

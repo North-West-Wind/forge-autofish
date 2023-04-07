@@ -32,7 +32,7 @@ public class ReelInDelayScreen extends Screen {
         };
         reelInDelay.setValue(Long.toString(AutoFishHandler.reelInDelay));
         addRenderableWidget(reelInDelay);
-        Button save = new Button.Builder(AutoFish.getTranslatableComponent("gui.setreelindelay.save"), button -> {
+        Button save = new Button(this.width / 2 - 75, this.height / 2, 150, 20, AutoFish.getTranslatableComponent("gui.setreelindelay.save"), button -> {
             if (!isNumeric(reelInDelay.getValue())) reelInDelay.setValue(Long.toString(AutoFishHandler.recastDelay));
             else {
                 long delay = Long.parseLong(reelInDelay.getValue());
@@ -42,7 +42,7 @@ public class ReelInDelayScreen extends Screen {
                     Minecraft.getInstance().setScreen(parent);
                 }
             }
-        }).pos(this.width / 2 - 75, this.height / 2).size(150, 20).build();
+        });
         addRenderableWidget(save);
     }
 

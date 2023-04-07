@@ -32,7 +32,7 @@ public class ThrowDelayScreen extends Screen {
         };
         throwDelay.setValue(Long.toString(AutoFishHandler.throwDelay));
         addRenderableWidget(throwDelay);
-        Button save = new Button.Builder(AutoFish.getTranslatableComponent("gui.setthrowdelay.save"), button -> {
+        Button save = new Button(this.width / 2 - 75, this.height / 2, 150, 20, AutoFish.getTranslatableComponent("gui.setthrowdelay.save"), button -> {
             if (!isNumeric(throwDelay.getValue())) throwDelay.setValue(Long.toString(AutoFishHandler.throwDelay));
             else {
                 long delay = Long.parseLong(throwDelay.getValue());
@@ -42,7 +42,7 @@ public class ThrowDelayScreen extends Screen {
                     Minecraft.getInstance().setScreen(parent);
                 }
             }
-        }).pos(this.width / 2 - 75, this.height / 2).size(150, 20).build();
+        });
         addRenderableWidget(save);
     }
 

@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[44,)"
+loaderVersion="[41,)"
 issueTrackerURL="https://github.com/North-West-Wind/forge-autofish/issues"
 license="GPL v3"
 
@@ -23,13 +23,13 @@ Note that this is my first mod, so there might be bugs.
 [[dependencies.forgeautofish]]
     modId="forge"
     mandatory=true
-    versionRange="[44,)"
+    versionRange="[41,)"
     ordering="NONE"
     side="BOTH"
     
 [[dependencies.forgeautofish]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.19.3,1.20)"
+    versionRange="[1.19,1.20)"
     ordering="NONE"
     side="BOTH"

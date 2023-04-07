@@ -2,13 +2,16 @@ package ml.northwestwind.forgeautofish;
 
 import ml.northwestwind.forgeautofish.config.Config;
 import ml.northwestwind.forgeautofish.keybind.KeyBinds;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.contents.LiteralContents;
 import net.minecraft.network.chat.contents.TranslatableContents;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.fml.IExtensionPoint;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
 import org.apache.logging.log4j.LogManager;
