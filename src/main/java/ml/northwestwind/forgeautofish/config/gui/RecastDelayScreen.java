@@ -1,13 +1,15 @@
 package ml.northwestwind.forgeautofish.config.gui;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import ml.northwestwind.forgeautofish.AutoFish;
 import ml.northwestwind.forgeautofish.config.Config;
 import ml.northwestwind.forgeautofish.handler.AutoFishHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.contents.TranslatableContents;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.regex.Pattern;
@@ -17,13 +19,13 @@ public class RecastDelayScreen extends Screen {
     private EditBox recastDelay;
 
     protected RecastDelayScreen(Screen parent) {
-        super(new TranslatableComponent("gui.setrecastdelay"));
+        super(AutoFish.getTranslatableComponent("gui.setrecastdelay"));
         this.parent = parent;
     }
 
     @Override
     protected void init() {
-        recastDelay = new EditBox(this.font, this.width / 2 - 75, this.height / 2 - 25, 150, 20, new TranslatableComponent("gui.setrecastdelay.recastdelay")) {
+        recastDelay = new EditBox(this.font, this.width / 2 - 75, this.height / 2 - 25, 150, 20, AutoFish.getTranslatableComponent("gui.setrecastdelay.recastdelay")) {
             @Override
             public boolean mouseClicked(double mouseX, double mouseY, int button) {
                 if (button == GLFW.GLFW_MOUSE_BUTTON_2) this.setValue("");
@@ -32,7 +34,7 @@ public class RecastDelayScreen extends Screen {
         };
         recastDelay.setValue(Long.toString(AutoFishHandler.recastDelay));
         addRenderableWidget(recastDelay);
-        Button save = new Button(this.width / 2 - 75, this.height / 2, 150, 20, new TranslatableComponent("gui.setrecastdelay.save"), button -> {
+        Button save = new Button(this.width / 2 - 75, this.height / 2, 150, 20, AutoFish.getTranslatableComponent("gui.setrecastdelay.save"), button -> {
             if (!isNumeric(recastDelay.getValue())) recastDelay.setValue(Long.toString(AutoFishHandler.recastDelay));
             else {
                 long delay = Long.parseLong(recastDelay.getValue());

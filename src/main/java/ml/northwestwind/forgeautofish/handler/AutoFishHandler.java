@@ -10,14 +10,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.MultiPlayerGameMode;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.FishingRodItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.InputEvent;
@@ -42,7 +42,7 @@ public class AutoFishHandler {
     private static ItemStack rodStack;
 
     @SubscribeEvent
-    public static void onKeyInput(InputEvent.KeyInputEvent e) {
+    public static void onKeyInput(InputEvent.Key e) {
         Minecraft minecraft = Minecraft.getInstance();
         LocalPlayer player = minecraft.player;
         if (KeyBinds.autofish.consumeClick()) {
@@ -132,7 +132,7 @@ public class AutoFishHandler {
         if (!autofish) return;
         InteractionHand hand = findHandOfRod(player);
         if (hand == null) return;
-        click(player.level, player, hand, Minecraft.getInstance().gameMode);
+        click(player, hand, Minecraft.getInstance().gameMode);
         ItemStack fishingRod = player.getItemInHand(hand);
         boolean needReplace = false;
         if (fishingRod.getMaxDamage() - fishingRod.getDamageValue() < 2)
@@ -170,7 +170,7 @@ public class AutoFishHandler {
         if (hand == null) return;
         ItemStack fishingRod = player.getItemInHand(hand);
         if (fishingRod.isEmpty()) return;
-        click(player.level, player, hand, Minecraft.getInstance().gameMode);
+        click(player, hand, Minecraft.getInstance().gameMode);
     }
 
     private static void checkItem(Player player) {
@@ -212,9 +212,9 @@ public class AutoFishHandler {
         shouldDrop.remove(item);
     }
 
-    private static void click(Level world, Player player, InteractionHand hand, @Nullable MultiPlayerGameMode controller) {
+    private static void click(Player player, InteractionHand hand, @Nullable MultiPlayerGameMode controller) {
         if (controller == null) return;
-        controller.useItem(player, world, hand);
+        controller.useItem(player, hand);
     }
 
     @Nullable
@@ -225,10 +225,6 @@ public class AutoFishHandler {
     }
 
     private static Component getText(String key, boolean bool) {
-        return new TranslatableComponent(
-                "toggle." + key,
-                new TranslatableComponent("toggle.enable." + bool)
-                        .withStyle(bool ? ChatFormatting.GREEN : ChatFormatting.RED)
-        );
+        return AutoFish.getTranslatableComponent("toggle." + key, AutoFish.getTranslatableComponent("toggle.enable." + bool).withStyle(bool ? ChatFormatting.GREEN : ChatFormatting.RED));
     }
 }
