@@ -1,15 +1,18 @@
 {
   "homepage": "https://github.com/North-West-Wind/forge-autofish/",
   "1.19.2": {
-    "5.0.2": "1.19 version works for 1.19.2"
+    "5.0.2": "1.19 version works for 1.19.2",
+    "5.1.0": "Allow reeling in from any fluid"
   },
   "1.19.1": {
-    "5.0.2": "1.19 version works for 1.19.1"
+    "5.0.2": "1.19 version works for 1.19.1",
+    "5.1.0": "Allow reeling in from any fluid"
   },
   "1.19": {
     "5.0.0": "1.19 Release",
     "5.0.1": "Ignore item filter outside hotbar",
-    "5.0.2": "Supports for Forge 41.0.64+"
+    "5.0.2": "Supports for Forge 41.0.64+",
+    "5.1.0": "Allow reeling in from any fluid"
   },
   "1.18.2": {
     "4.0.2": "1.18.2 Release",
@@ -155,8 +158,8 @@
     "1.0.4": "1.8.9 Release"
   },
   "promos": {
-    "1.19.2-latest": "5.0.2",
-    "1.19.2-recommended": "5.0.2",
+    "1.19.2-latest": "5.1.0",
+    "1.19.2-recommended": "5.1.0",
     "1.19.1-latest": "5.0.2",
     "1.19.1-recommended": "5.0.2",
     "1.19-latest": "5.0.2",
