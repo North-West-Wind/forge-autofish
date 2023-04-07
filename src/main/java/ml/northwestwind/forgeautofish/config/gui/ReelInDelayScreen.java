@@ -1,13 +1,13 @@
 package ml.northwestwind.forgeautofish.config.gui;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import ml.northwestwind.forgeautofish.AutoFish;
 import ml.northwestwind.forgeautofish.config.Config;
 import ml.northwestwind.forgeautofish.handler.AutoFishHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.TranslatableComponent;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.regex.Pattern;
@@ -17,13 +17,13 @@ public class ReelInDelayScreen extends Screen {
     private EditBox reelInDelay;
 
     protected ReelInDelayScreen(Screen parent) {
-        super(AutoFish.getTranslatableComponent("gui.setreelindelay"));
+        super(new TranslatableComponent("gui.setreelindelay"));
         this.parent = parent;
     }
 
     @Override
     protected void init() {
-        reelInDelay = new EditBox(this.font, this.width / 2 - 75, this.height / 2 - 25, 150, 20, AutoFish.getTranslatableComponent("gui.setreelindelay.reelindelay")) {
+        reelInDelay = new EditBox(this.font, this.width / 2 - 75, this.height / 2 - 25, 150, 20, new TranslatableComponent("gui.setreelindelay.reelindelay")) {
             @Override
             public boolean mouseClicked(double mouseX, double mouseY, int button) {
                 if (button == GLFW.GLFW_MOUSE_BUTTON_2) this.setValue("");
@@ -32,7 +32,7 @@ public class ReelInDelayScreen extends Screen {
         };
         reelInDelay.setValue(Long.toString(AutoFishHandler.reelInDelay));
         addRenderableWidget(reelInDelay);
-        Button save = new Button(this.width / 2 - 75, this.height / 2, 150, 20, AutoFish.getTranslatableComponent("gui.setreelindelay.save"), button -> {
+        Button save = new Button(this.width / 2 - 75, this.height / 2, 150, 20, new TranslatableComponent("gui.setreelindelay.save"), button -> {
             if (!isNumeric(reelInDelay.getValue())) reelInDelay.setValue(Long.toString(AutoFishHandler.recastDelay));
             else {
                 long delay = Long.parseLong(reelInDelay.getValue());

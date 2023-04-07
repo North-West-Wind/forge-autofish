@@ -1,15 +1,13 @@
 package ml.northwestwind.forgeautofish.config.gui;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import ml.northwestwind.forgeautofish.AutoFish;
 import ml.northwestwind.forgeautofish.config.Config;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.contents.LiteralContents;
-import net.minecraft.network.chat.contents.TranslatableContents;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -34,7 +32,7 @@ public class SuperFilterScreen extends Screen {
     int reducedWidth;
 
     protected SuperFilterScreen(Screen parent) {
-        super(AutoFish.getTranslatableComponent("gui.superfilterscreen"));
+        super(new TranslatableComponent("gui.superfilterscreen"));
         this.parent = parent;
     }
 
@@ -53,7 +51,7 @@ public class SuperFilterScreen extends Screen {
         original = Config.FILTER.get().stream().map(string -> ForgeRegistries.ITEMS.getValue(new ResourceLocation(string))).collect(Collectors.toList());
         maxPage = (int) Math.ceil(original.size() / (double) max);
         searching = original;
-        search = new EditBox(this.font, this.width / 2 - 75, 35, 150, 20, AutoFish.getTranslatableComponent("gui.superfilterscreen.search")) {
+        search = new EditBox(this.font, this.width / 2 - 75, 35, 150, 20, new TranslatableComponent("gui.superfilterscreen.search")) {
             @Override
             public boolean mouseClicked(double mouseX, double mouseY, int button) {
                 if (button == GLFW.GLFW_MOUSE_BUTTON_2) this.setValue("");
@@ -66,11 +64,10 @@ public class SuperFilterScreen extends Screen {
             String[] tags = Arrays.stream(args).filter(s1 -> s1.startsWith("#")).toArray(String[]::new);
             String[] finalArgs = Arrays.stream(args).filter(s1 -> !s1.startsWith("@") && !s1.startsWith("#")).toArray(String[]::new);;
             searching = original.stream().filter(item -> {
-                ResourceLocation rl = ForgeRegistries.ITEMS.getKey(item);
                 boolean matchmod = mods.length < 1, matchtag = tags.length < 1, matcharg = finalArgs.length < 1;
                 for (String mod : mods) {
                     mod = mod.toLowerCase().substring(1);
-                    if (rl != null) matchmod = rl.getNamespace().toLowerCase().contains(mod);
+                    matchmod = item.getRegistryName().getNamespace().toLowerCase().contains(mod);
                 }
                 Optional<IReverseTag<Item>> reverseTagsOptional = ForgeRegistries.ITEMS.tags().getReverseTag(item);
                 if (reverseTagsOptional.isPresent())
@@ -80,7 +77,7 @@ public class SuperFilterScreen extends Screen {
                     }
                 for (String arg : finalArgs) {
                     arg = arg.toLowerCase();
-                    if (rl != null) matcharg = rl.getPath().contains(arg) || item.getDescription().getString().contains(arg);
+                    matcharg = item.getRegistryName().getPath().contains(arg) || item.getDescription().getString().contains(arg);
                 }
                 return matchmod && matchtag && matcharg;
             }).collect(Collectors.toList());
@@ -88,16 +85,16 @@ public class SuperFilterScreen extends Screen {
             if (page > maxPage - 1) page = maxPage - 1;
         });
         addRenderableWidget(search);
-        Button add = new Button(this.width / 2 - 75, 60, 72, 20, AutoFish.getTranslatableComponent("gui.superfilterscreen.openfilter"), button -> Minecraft.getInstance().setScreen(new FilterSelectionScreen(this)));
+        Button add = new Button(this.width / 2 - 75, 60, 72, 20, new TranslatableComponent("gui.superfilterscreen.openfilter"), button -> Minecraft.getInstance().setScreen(new FilterSelectionScreen(this)));
         addRenderableWidget(add);
-        Button done = new Button(this.width / 2 + 3, 60, 72, 20, AutoFish.getTranslatableComponent("gui.superfilterscreen.done"), button -> Minecraft.getInstance().setScreen(parent));
+        Button done = new Button(this.width / 2 + 3, 60, 72, 20, new TranslatableComponent("gui.superfilterscreen.done"), button -> Minecraft.getInstance().setScreen(parent));
         addRenderableWidget(done);
-        previous = new Button(this.width / 2 - 100, 60, 20, 20, AutoFish.getLiteralComponent("<"), button -> {
+        previous = new Button(this.width / 2 - 100, 60, 20, 20, new TextComponent("<"), button -> {
             if (page > 0) page--;
         });
         previous.visible = false;
         addRenderableWidget(previous);
-        next = new Button(this.width / 2 + 80, 60, 20, 20, AutoFish.getLiteralComponent(">"), button -> {
+        next = new Button(this.width / 2 + 80, 60, 20, 20, new TextComponent(">"), button -> {
             if (page < maxPage - 1) page++;
         });
         next.visible = false;
