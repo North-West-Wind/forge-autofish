@@ -98,9 +98,9 @@ public class FilterSelectionScreen extends Screen {
     }
 
     @Override
-    public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
-        this.renderBackground(poseStack);
-        drawCenteredString(poseStack, this.font, this.title, this.width / 2, 20, -1);Collection<Item> searchingCopy = Lists.newArrayList();
+    public void render(PoseStack PoseStack, int mouseX, int mouseY, float partialTicks) {
+        this.renderBackground(PoseStack);
+        drawCenteredString(PoseStack, this.font, this.title, this.width / 2, 20, -1);Collection<Item> searchingCopy = Lists.newArrayList();
         Collection<Item> prioritized = searching.stream().filter(item -> {
             ResourceLocation rl = ForgeRegistries.ITEMS.getKey(item);
             if (rl == null) return false;
@@ -118,20 +118,20 @@ public class FilterSelectionScreen extends Screen {
                 int y = getYPos(k, reducedHeight);
                 ItemStack stack = new ItemStack(item);
                 if (!stack.isEmpty()) {
-                    itemRenderer.renderGuiItem(poseStack, stack, x, y);
+                    itemRenderer.renderGuiItem(stack, x, y);
                     if (!clickProcessed && isMouseInRange(clickX, clickY, x, y, x+16, y+16)) {
                         if (selected.contains(item)) selected.remove(item);
                         else selected.add(item);
                         clickProcessed = true;
                     }
-                    if (selected.contains(item)) fillGradient(poseStack, x - 2, y - 2, x + 18, y + 18, Color.GREEN.getRGB(), Color.GREEN.getRGB());
-                    else if (isMouseInRange(mouseX, mouseY, x, y,x + 16, y + 16)) fillGradient(poseStack, x - 2, y - 2, x + 18, y + 18, Color.LIGHT_GRAY.getRGB(), Color.LIGHT_GRAY.getRGB());
-                    if (isMouseInRange(mouseX, mouseY, x, y,x + 16, y + 16)) renderTooltip(poseStack, stack, mouseX, mouseY);
+                    if (selected.contains(item)) fillGradient(PoseStack, x - 2, y - 2, x + 18, y + 18, Color.GREEN.getRGB(), Color.GREEN.getRGB());
+                    else if (isMouseInRange(mouseX, mouseY, x, y,x + 16, y + 16)) fillGradient(PoseStack, x - 2, y - 2, x + 18, y + 18, Color.LIGHT_GRAY.getRGB(), Color.LIGHT_GRAY.getRGB());
+                    if (isMouseInRange(mouseX, mouseY, x, y,x + 16, y + 16)) renderTooltip(PoseStack, stack, mouseX, mouseY);
                 }
             }
         }
-        search.render(poseStack, mouseX, mouseY, partialTicks);
-        super.render(poseStack, mouseX, mouseY, partialTicks);
+        search.render(PoseStack, mouseX, mouseY, partialTicks);
+        super.render(PoseStack, mouseX, mouseY, partialTicks);
     }
 
     private boolean isMouseInRange(double mouseX, double mouseY, int x1, int y1, int x2, int y2) {
@@ -150,7 +150,7 @@ public class FilterSelectionScreen extends Screen {
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
         if (keyCode == GLFW.GLFW_KEY_ESCAPE) {
             if (!search.isFocused()) Minecraft.getInstance().setScreen(parent);
-            else search.setFocused(false);
+            else search.setFocus(false);
         }
         return super.keyPressed(keyCode, scanCode, modifiers);
     }

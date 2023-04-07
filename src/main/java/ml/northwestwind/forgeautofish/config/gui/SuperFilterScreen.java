@@ -98,9 +98,9 @@ public class SuperFilterScreen extends Screen {
     }
 
     @Override
-    public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
-        this.renderBackground(poseStack);
-        drawCenteredString(poseStack, this.font, this.title, this.width / 2, 20, -1);
+    public void render(PoseStack PoseStack, int mouseX, int mouseY, float partialTicks) {
+        this.renderBackground(PoseStack);
+        drawCenteredString(PoseStack, this.font, this.title, this.width / 2, 20, -1);
         Item[] items = searching.toArray(new Item[0]);
         for (int i = page * max; i < Math.min((page + 1) * max, searching.size()); i++) {
             Item item = items[i];
@@ -108,11 +108,11 @@ public class SuperFilterScreen extends Screen {
             int k = (i % max) % (max / 3);
             ItemStack stack = ItemStack.EMPTY;
             if (item != null) stack = new ItemStack(item);
-            if (!stack.isEmpty()) itemRenderer.renderGuiItem(poseStack, stack, (reducedWidth * h / 3) + 15, (reducedHeight * k / (max / 3)) + 90);
-            this.font.draw(poseStack, stack.getDisplayName().getString(), (float) ((reducedWidth * h / 3) + 45), (float) ((reducedHeight * k / (max / 3)) + 95), Color.WHITE.getRGB());
+            if (!stack.isEmpty()) itemRenderer.renderGuiItem(stack, (reducedWidth * h / 3) + 15, (reducedHeight * k / (max / 3)) + 90);
+            this.font.draw(PoseStack, stack.getDisplayName().getString(), (float) ((reducedWidth * h / 3) + 45), (float) ((reducedHeight * k / (max / 3)) + 95), Color.WHITE.getRGB());
         }
-        search.render(poseStack, mouseX, mouseY, partialTicks);
-        super.render(poseStack, mouseX, mouseY, partialTicks);
+        search.render(PoseStack, mouseX, mouseY, partialTicks);
+        super.render(PoseStack, mouseX, mouseY, partialTicks);
     }
 
     @Override
