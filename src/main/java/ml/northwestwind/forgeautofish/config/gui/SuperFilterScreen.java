@@ -7,9 +7,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.contents.LiteralContents;
-import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -88,18 +85,14 @@ public class SuperFilterScreen extends Screen {
             if (page > maxPage - 1) page = maxPage - 1;
         });
         addRenderableWidget(search);
-        Button add = new Button(this.width / 2 - 75, 60, 72, 20, AutoFish.getTranslatableComponent("gui.superfilterscreen.openfilter"), button -> Minecraft.getInstance().setScreen(new FilterSelectionScreen(this)));
+        Button add = new Button.Builder(AutoFish.getTranslatableComponent("gui.superfilterscreen.openfilter"), button -> Minecraft.getInstance().setScreen(new FilterSelectionScreen(this))).pos(this.width / 2 - 75, 60).size(72, 20).build();
         addRenderableWidget(add);
-        Button done = new Button(this.width / 2 + 3, 60, 72, 20, AutoFish.getTranslatableComponent("gui.superfilterscreen.done"), button -> Minecraft.getInstance().setScreen(parent));
+        Button done = new Button.Builder(AutoFish.getTranslatableComponent("gui.superfilterscreen.done"), button -> Minecraft.getInstance().setScreen(parent)).pos(this.width / 2 + 3, 60).size(72, 20).build();
         addRenderableWidget(done);
-        previous = new Button(this.width / 2 - 100, 60, 20, 20, AutoFish.getLiteralComponent("<"), button -> {
-            if (page > 0) page--;
-        });
+        previous = new Button.Builder(AutoFish.getLiteralComponent("<"), button -> { if (page > 0) page--; }).pos(this.width / 2 - 100, 60).size(20, 20).build();
         previous.visible = false;
         addRenderableWidget(previous);
-        next = new Button(this.width / 2 + 80, 60, 20, 20, AutoFish.getLiteralComponent(">"), button -> {
-            if (page < maxPage - 1) page++;
-        });
+        next = new Button.Builder(AutoFish.getLiteralComponent(">"), button -> { if (page < maxPage - 1) page++; }).pos(this.width / 2 + 80, 60).size(20, 20).build();
         next.visible = false;
         addRenderableWidget(next);
     }

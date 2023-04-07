@@ -12,7 +12,7 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 minecraft {
-    mappings channel: 'official', version: '1.19.2'
+    mappings channel: 'official', version: '1.19.3'
     runs {
         client {
             workingDirectory project.file('run')
@@ -56,12 +56,12 @@ minecraft {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.19.2-43.1.25'
+    minecraft 'net.minecraftforge:forge:1.19.3-44.1.0'
 }
 
 jar {
     manifest {
-        classifier = "1.19.x"
+        classifier = "1.19.3"
         attributes([
             "Specification-Title": "forgeautofish",
             "Specification-Vendor": "forgeautofish",

@@ -1,5 +1,8 @@
 {
   "homepage": "https://github.com/North-West-Wind/forge-autofish/",
+  "1.19.3": {
+    "5.0.3": "Fixed GUI crash in 1.19.3"
+  },
   "1.19.2": {
     "5.0.2": "1.19 version works for 1.19.2",
     "5.1.0": "Allow reeling in from any fluid"
@@ -164,6 +167,8 @@
     "1.0.4": "1.8.9 Release"
   },
   "promos": {
+    "1.19.3-latest": "5.1.0",
+    "1.19.3-recommended": "5.1.0",
     "1.19.2-latest": "5.1.0",
     "1.19.2-recommended": "5.1.0",
     "1.19.1-latest": "5.0.2",
