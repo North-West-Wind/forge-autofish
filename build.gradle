@@ -4,7 +4,7 @@ plugins {
     id 'net.minecraftforge.gradle' version '5.1.+'
 }
 
-version = '5.0.3'
+version = '5.1.0'
 group = 'ml.northwestwind.forgeautofish'
 archivesBaseName = 'forgeautofish'
 
