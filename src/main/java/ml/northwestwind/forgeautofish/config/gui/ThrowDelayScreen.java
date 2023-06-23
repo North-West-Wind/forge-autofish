@@ -5,6 +5,7 @@ import ml.northwestwind.forgeautofish.AutoFish;
 import ml.northwestwind.forgeautofish.config.Config;
 import ml.northwestwind.forgeautofish.handler.AutoFishHandler;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
@@ -61,11 +62,11 @@ public class ThrowDelayScreen extends Screen {
     }
 
     @Override
-    public void render(PoseStack PoseStack, int mouseX, int mouseY, float partialTicks) {
-        this.renderBackground(PoseStack);
-        drawCenteredString(PoseStack, this.font, this.title, this.width / 2, 20, -1);
-        this.throwDelay.render(PoseStack, mouseX, mouseY, partialTicks);
-        super.render(PoseStack, mouseX, mouseY, partialTicks);
+    public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+        this.renderBackground(graphics);
+        graphics.drawCenteredString(this.font, this.title, this.width / 2, 20, -1);
+        this.throwDelay.render(graphics, mouseX, mouseY, partialTicks);
+        super.render(graphics, mouseX, mouseY, partialTicks);
     }
 
     @Override

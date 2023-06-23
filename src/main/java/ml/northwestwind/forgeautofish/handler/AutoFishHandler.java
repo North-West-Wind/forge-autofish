@@ -122,7 +122,7 @@ public class AutoFishHandler {
         double x = vector.x();
         double y = vector.y();
         double z = vector.z();
-        if (y < -0.075 && !player.level.getFluidState(player.fishing.blockPosition()).isEmpty() && x == 0 && z == 0)
+        if (y < -0.075 && !player.level().getFluidState(player.fishing.blockPosition()).isEmpty() && x == 0 && z == 0)
             pendingReelIn = true;
     }
 

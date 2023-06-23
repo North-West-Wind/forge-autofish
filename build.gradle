@@ -1,10 +1,11 @@
 plugins {
     id 'eclipse'
+    id 'idea'
     id 'maven-publish'
-    id 'net.minecraftforge.gradle' version '5.1.+'
+    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
 }
 
-version = '5.1.0'
+version = '6.0.0'
 group = 'ml.northwestwind.forgeautofish'
 archivesBaseName = 'forgeautofish'
 
@@ -12,7 +13,8 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 minecraft {
-    mappings channel: 'official', version: '1.19.4'
+    mappings channel: 'official', version: mc_version
+    copyIdeResources = true
     runs {
         client {
             workingDirectory project.file('run')
@@ -56,12 +58,12 @@ minecraft {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.19.4-45.0.42'
+    minecraft "net.minecraftforge:forge:${mc_version}-${forge_version}"
 }
 
 jar {
     manifest {
-        classifier = "1.19.4"
+        archiveClassifier = mc_version
         attributes([
             "Specification-Title": "forgeautofish",
             "Specification-Vendor": "forgeautofish",
