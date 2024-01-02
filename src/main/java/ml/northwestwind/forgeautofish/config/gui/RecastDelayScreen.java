@@ -1,6 +1,5 @@
 package ml.northwestwind.forgeautofish.config.gui;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import ml.northwestwind.forgeautofish.AutoFish;
 import ml.northwestwind.forgeautofish.config.Config;
 import ml.northwestwind.forgeautofish.handler.AutoFishHandler;
@@ -49,7 +48,7 @@ public class RecastDelayScreen extends Screen {
 
     @Override
     public void tick() {
-        recastDelay.tick();
+        //recastDelay.tick();
         super.tick();
     }
 
@@ -63,7 +62,7 @@ public class RecastDelayScreen extends Screen {
 
     @Override
     public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-        this.renderBackground(graphics);
+        this.renderBackground(graphics, mouseX, mouseY, partialTicks);
         graphics.drawCenteredString(this.font, this.title, this.width / 2, 20, -1);
         this.recastDelay.render(graphics, mouseX, mouseY, partialTicks);
         super.render(graphics, mouseX, mouseY, partialTicks);

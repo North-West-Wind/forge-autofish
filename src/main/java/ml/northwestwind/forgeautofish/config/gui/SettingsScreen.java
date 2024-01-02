@@ -1,6 +1,5 @@
 package ml.northwestwind.forgeautofish.config.gui;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import ml.northwestwind.forgeautofish.AutoFish;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -35,7 +34,7 @@ public class SettingsScreen extends Screen {
 
     @Override
     public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-        this.renderBackground(graphics);
+        this.renderBackground(graphics, mouseX, mouseY, partialTicks);
         graphics.drawCenteredString(this.font, this.title, this.width / 2, 20, -1);
         super.render(graphics, mouseX, mouseY, partialTicks);
     }

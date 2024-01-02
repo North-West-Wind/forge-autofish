@@ -1,7 +1,6 @@
 package ml.northwestwind.forgeautofish.config.gui;
 
 import com.google.common.collect.Lists;
-import com.mojang.blaze3d.vertex.PoseStack;
 import ml.northwestwind.forgeautofish.AutoFish;
 import ml.northwestwind.forgeautofish.config.Config;
 import net.minecraft.client.Minecraft;
@@ -100,7 +99,7 @@ public class FilterSelectionScreen extends Screen {
 
     @Override
     public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-        this.renderBackground(graphics);
+        this.renderBackground(graphics, mouseX, mouseY, partialTicks);
         graphics.drawCenteredString(this.font, this.title, this.width / 2, 20, -1);Collection<Item> searchingCopy = Lists.newArrayList();
         Collection<Item> prioritized = searching.stream().filter(item -> {
             ResourceLocation rl = ForgeRegistries.ITEMS.getKey(item);
@@ -171,7 +170,7 @@ public class FilterSelectionScreen extends Screen {
 
     @Override
     public void tick() {
-        search.tick();
+        //search.tick();
         super.tick();
         previous.visible = page >= 1;
         next.visible = page < maxPage - 1;

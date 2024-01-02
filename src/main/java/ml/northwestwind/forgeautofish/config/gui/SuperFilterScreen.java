@@ -1,6 +1,5 @@
 package ml.northwestwind.forgeautofish.config.gui;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import ml.northwestwind.forgeautofish.AutoFish;
 import ml.northwestwind.forgeautofish.config.Config;
 import net.minecraft.client.Minecraft;
@@ -38,7 +37,7 @@ public class SuperFilterScreen extends Screen {
 
     @Override
     public void tick() {
-        search.tick();
+        //search.tick();
         previous.visible = page >= 1;
         next.visible = page < maxPage - 1;
     }
@@ -100,7 +99,7 @@ public class SuperFilterScreen extends Screen {
 
     @Override
     public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-        this.renderBackground(graphics);
+        this.renderBackground(graphics, mouseX, mouseY, partialTicks);
         graphics.drawCenteredString(this.font, this.title, this.width / 2, 20, -1);
         Item[] items = searching.toArray(new Item[0]);
         for (int i = page * max; i < Math.min((page + 1) * max, searching.size()); i++) {

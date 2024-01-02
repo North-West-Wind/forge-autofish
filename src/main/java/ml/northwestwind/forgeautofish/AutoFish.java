@@ -3,7 +3,7 @@ package ml.northwestwind.forgeautofish;
 import ml.northwestwind.forgeautofish.config.Config;
 import ml.northwestwind.forgeautofish.keybind.KeyBinds;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.contents.LiteralContents;
+import net.minecraft.network.chat.contents.PlainTextContents;
 import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraftforge.fml.IExtensionPoint;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -34,6 +34,6 @@ public class AutoFish
     }
 
     public static MutableComponent getLiteralComponent(String str) {
-        return MutableComponent.create(new LiteralContents(str));
+        return MutableComponent.create(new PlainTextContents.LiteralContents(str));
     }
 }
