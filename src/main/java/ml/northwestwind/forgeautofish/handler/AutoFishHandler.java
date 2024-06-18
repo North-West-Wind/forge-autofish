@@ -175,7 +175,7 @@ public class AutoFishHandler {
         if (itemsBeforeFished != null) {
             List<ItemStack> items = player.getInventory().items;
             for (String name : Config.FILTER.get()) {
-                ResourceLocation rl = new ResourceLocation(name);
+                ResourceLocation rl = ResourceLocation.parse(name);
                 Item item = ForgeRegistries.ITEMS.getValue(rl);
                 if (item == null) continue;
                 int newCount = items.stream().filter(stack -> stack.getItem().equals(item)).mapToInt(ItemStack::getCount).reduce(Integer::sum).orElse(0);

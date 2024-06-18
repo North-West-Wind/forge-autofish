@@ -26,7 +26,7 @@ public class FilterSelectionScreen extends Screen {
     private EditBox search;
     private final Collection<Item> original = ForgeRegistries.ITEMS.getValues();
     private Collection<Item> searching;
-    private final Set<Item> selected = new HashSet<>(Config.FILTER.get().stream().map(string -> ForgeRegistries.ITEMS.getValue(new ResourceLocation(string))).collect(Collectors.toList()));
+    private final Set<Item> selected = new HashSet<>(Config.FILTER.get().stream().map(string -> ForgeRegistries.ITEMS.getValue(ResourceLocation.parse(string))).collect(Collectors.toList()));
     private int page, maxPage = (int) Math.ceil(original.size() / 300.0), max = 300;
     private boolean clickProcessed = true;
     private double clickX, clickY;
