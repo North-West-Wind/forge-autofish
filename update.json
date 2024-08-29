@@ -1,5 +1,12 @@
 {
   "homepage": "https://github.com/North-West-Wind/forge-autofish/",
+  "1.21.1": {
+    "7.1.0": "Check Interval also checks if bobber is stuck & Fixed blurry text in config"
+  },
+  "1.21": {
+    "7.0.0": "1.21 Release",
+    "7.1.0": "Check Interval also checks if bobber is stuck & Fixed blurry text in config"
+  },
   "1.20.6": {
     "6.0.0": "1.20.1 Release"
   },
@@ -190,6 +197,10 @@
     "1.0.4": "1.8.9 Release"
   },
   "promos": {
+    "1.21.1-latest": "7.1.0",
+    "1.21.1-recommended": "7.1.0",
+    "1.21-latest": "7.1.0",
+    "1.21-recommended": "7.1.0",
     "1.20.6-latest": "6.0.0",
     "1.20.6-recommended": "6.0.0",
     "1.20.5-latest": "6.0.0",

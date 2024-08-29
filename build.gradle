@@ -5,7 +5,7 @@ plugins {
     id 'net.minecraftforge.gradle' version '[6.0.24,6.2)'
 }
 
-version = '6.0.0'
+version = '7.1.0'
 group = 'ml.northwestwind.forgeautofish'
 
 base {
@@ -50,7 +50,7 @@ dependencies {
 
 tasks.named('jar', Jar).configure {
     manifest {
-        archiveClassifier = mc_version
+        archiveClassifier = build_mc_version
         attributes([
             "Specification-Title": "forgeautofish",
             "Specification-Vendor": "forgeautofish",

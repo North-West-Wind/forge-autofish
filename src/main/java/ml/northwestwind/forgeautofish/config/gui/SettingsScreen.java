@@ -4,10 +4,11 @@ import ml.northwestwind.forgeautofish.AutoFish;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.StringWidget;
 import net.minecraft.client.gui.screens.Screen;
 
 public class SettingsScreen extends Screen {
-    private static int WIDTH = 150, HEIGHT = 20, MARGIN = 5;
+    private static final int WIDTH = 150, HEIGHT = 20, MARGIN = 5;
 
     public SettingsScreen() {
         super(AutoFish.getTranslatableComponent("gui.forgeautofish"));
@@ -40,7 +41,7 @@ public class SettingsScreen extends Screen {
     @Override
     public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
         this.renderBackground(graphics, mouseX, mouseY, partialTicks);
-        graphics.drawCenteredString(this.font, this.title, this.width / 2, 20, -1);
         super.render(graphics, mouseX, mouseY, partialTicks);
+        graphics.drawCenteredString(this.font, this.title, this.width / 2, 20, -1);
     }
 }

@@ -68,7 +68,10 @@ public class AutoFishHandler {
         if (checkTick > 0) checkTick--;
         else {
             checkTick = checkInterval;
-            if (!pendingRecast && player.fishing == null) recast(player);
+            if (!pendingRecast) {
+                if (player.fishing == null) recast(player);
+                else if (player.fishing.getDeltaMovement().lengthSqr() == 0) pendingReelIn = true;
+            }
         }
         if (lastTickFishing && player.fishing == null)
             itemsBeforeFished = Lists.newArrayList(player.getInventory().items);

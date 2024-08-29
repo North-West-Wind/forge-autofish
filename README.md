@@ -11,11 +11,12 @@ Finally! An AFK fishing mod for Forge users!
 Thanks for using the mod!
 
 ### Currently supported versions
-1.20.1 (Might work with 1.20. Someone please test it.)  
-1.19 (Tested with 1.19)  
-1.18.x (Tested with 1.18.1)
+1.21
+1.20.x
 
 ### Unsupported, but we have their files
+1.19.x
+1.18.x
 1.17.x  
 1.16.x  
 1.15.x  
