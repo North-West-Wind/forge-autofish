@@ -20,6 +20,8 @@ build
 # other
 eclipse
 run
+runs
+run-data
 .vscode
 
 # Files from Forge MDK

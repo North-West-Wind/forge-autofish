@@ -1,17 +1,18 @@
-package ml.northwestwind.forgeautofish.config.gui;
+package in.northwestw.forgeautofish.config.gui;
 
-import ml.northwestwind.forgeautofish.AutoFish;
-import ml.northwestwind.forgeautofish.config.Config;
+import in.northwestw.forgeautofish.AutoFish;
+import in.northwestw.forgeautofish.config.Config;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.tags.IReverseTag;
 import org.lwjgl.glfw.GLFW;
 
 import java.awt.*;
@@ -47,7 +48,7 @@ public class SuperFilterScreen extends Screen {
         reducedHeight = this.height - 90;
         reducedWidth = this.width - 30;
         max = /* (int) Math.round(30 * (reducedWidth / 550.0 + reducedHeight / 330.0) / 2.0) */ 30;
-        original = Config.FILTER.get().stream().map(string -> ForgeRegistries.ITEMS.getValue(ResourceLocation.parse(string))).collect(Collectors.toList());
+        original = Config.FILTER.get().stream().map(string -> BuiltInRegistries.ITEM.getOptional(ResourceLocation.parse(string))).filter(Optional::isPresent).map(Optional::get).collect(Collectors.toList());
         maxPage = (int) Math.ceil(original.size() / (double) max);
         searching = original;
         search = new EditBox(this.font, this.width / 2 - 75, 35, 150, 20, AutoFish.getTranslatableComponent("gui.superfilterscreen.search")) {
@@ -63,21 +64,17 @@ public class SuperFilterScreen extends Screen {
             String[] tags = Arrays.stream(args).filter(s1 -> s1.startsWith("#")).toArray(String[]::new);
             String[] finalArgs = Arrays.stream(args).filter(s1 -> !s1.startsWith("@") && !s1.startsWith("#")).toArray(String[]::new);;
             searching = original.stream().filter(item -> {
-                ResourceLocation rl = ForgeRegistries.ITEMS.getKey(item);
+                ResourceLocation rl = BuiltInRegistries.ITEM.getKey(item);
                 boolean matchmod = mods.length < 1, matchtag = tags.length < 1, matcharg = finalArgs.length < 1;
                 for (String mod : mods) {
                     mod = mod.toLowerCase().substring(1);
-                    if (rl != null) matchmod = rl.getNamespace().toLowerCase().contains(mod);
+                    if (!rl.equals(BuiltInRegistries.ITEM.getDefaultKey())) matchmod = rl.getNamespace().toLowerCase().contains(mod);
                 }
-                Optional<IReverseTag<Item>> reverseTagsOptional = ForgeRegistries.ITEMS.tags().getReverseTag(item);
-                if (reverseTagsOptional.isPresent())
-                    for (String tag : tags) {
-                        String finalTag = tag.toLowerCase().substring(1);
-                        matchtag = reverseTagsOptional.get().getTagKeys().anyMatch(tagKey -> tagKey.location().getPath().contains(finalTag));
-                    }
+                for (String tag : tags)
+                    matchtag = BuiltInRegistries.ITEM.getOrCreateTag(TagKey.create(Registries.ITEM, ResourceLocation.parse(tag.toLowerCase().substring(1)))).stream().anyMatch(it -> it == item);
                 for (String arg : finalArgs) {
                     arg = arg.toLowerCase();
-                    if (rl != null) matcharg = rl.getPath().contains(arg) || item.getDescription().getString().contains(arg);
+                    if (!rl.equals(BuiltInRegistries.ITEM.getDefaultKey())) matcharg = rl.getPath().contains(arg) || item.getDescription().getString().contains(arg);
                 }
                 return matchmod && matchtag && matcharg;
             }).collect(Collectors.toList());

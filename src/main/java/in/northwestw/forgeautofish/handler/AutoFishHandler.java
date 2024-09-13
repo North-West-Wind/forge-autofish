@@ -1,14 +1,15 @@
-package ml.northwestwind.forgeautofish.handler;
+package in.northwestw.forgeautofish.handler;
 
 import com.google.common.collect.Lists;
-import ml.northwestwind.forgeautofish.AutoFish;
-import ml.northwestwind.forgeautofish.config.Config;
-import ml.northwestwind.forgeautofish.config.gui.SettingsScreen;
-import ml.northwestwind.forgeautofish.keybind.KeyBinds;
+import in.northwestw.forgeautofish.AutoFish;
+import in.northwestw.forgeautofish.config.Config;
+import in.northwestw.forgeautofish.config.gui.SettingsScreen;
+import in.northwestw.forgeautofish.keybind.KeyBinds;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.MultiPlayerGameMode;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
@@ -17,27 +18,38 @@ import net.minecraft.world.item.FishingRodItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.InputEvent;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.InputEvent;
+import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Optional;
 
-@Mod.EventBusSubscriber(modid = AutoFish.MODID, value = Dist.CLIENT)
+@EventBusSubscriber(modid = AutoFish.MODID, value = Dist.CLIENT)
 public class AutoFishHandler {
-    public static boolean autofish = Config.AUTO_FISH.get(), rodprotect = Config.ROD_PROTECT.get(), autoreplace = Config.AUTO_REPLACE.get(), itemfilter = Config.ALL_FILTERS.get();
-    public static long recastDelay = Config.RECAST_DELAY.get(), reelInDelay = Config.REEL_IN_DELAY.get(), throwDelay = Config.THROW_DELAY.get(), checkInterval = Config.CHECK_INTERVAL.get();
+    public static boolean autofish, rodprotect, autoreplace, itemfilter;
+    public static long recastDelay, reelInDelay, throwDelay, checkInterval;
     private static final List<Item> shouldDrop = Lists.newArrayList();
     private static boolean processingDrop, pendingReelIn, pendingRecast, lastTickFishing, afterDrop;
     private static int dropCd;
     private static long tick, checkTick;
     private static List<ItemStack> itemsBeforeFished;
     private static ItemStack rodStack;
+
+    public static void loadSettingsFromConfig() {
+        autofish = Config.AUTO_FISH.get();
+        rodprotect = Config.ROD_PROTECT.get();
+        autoreplace = Config.AUTO_REPLACE.get();
+        itemfilter = Config.ALL_FILTERS.get();
+
+        recastDelay = Config.RECAST_DELAY.get();
+        reelInDelay = Config.REEL_IN_DELAY.get();
+        throwDelay = Config.THROW_DELAY.get();
+        checkInterval = Config.CHECK_INTERVAL.get();
+    }
 
     @SubscribeEvent
     public static void onKeyInput(InputEvent.Key e) {
@@ -61,9 +73,9 @@ public class AutoFishHandler {
     }
 
     @SubscribeEvent
-    public static void onPlayerTick(final TickEvent.PlayerTickEvent e) {
-        if (e.side != LogicalSide.CLIENT || !e.phase.equals(TickEvent.Phase.START)) return;
-        Player player = e.player;
+    public static void onPlayerTick(final PlayerTickEvent.Pre e) {
+        if (!e.getEntity().level().isClientSide) return;
+        Player player = e.getEntity();
         if (!player.getUUID().equals(Minecraft.getInstance().player.getUUID())) return;
         if (checkTick > 0) checkTick--;
         else {
@@ -179,12 +191,12 @@ public class AutoFishHandler {
             List<ItemStack> items = player.getInventory().items;
             for (String name : Config.FILTER.get()) {
                 ResourceLocation rl = ResourceLocation.parse(name);
-                Item item = ForgeRegistries.ITEMS.getValue(rl);
-                if (item == null) continue;
-                int newCount = items.stream().filter(stack -> stack.getItem().equals(item)).mapToInt(ItemStack::getCount).reduce(Integer::sum).orElse(0);
-                int oldCount = itemsBeforeFished.stream().filter(stack -> stack.getItem().equals(item)).mapToInt(ItemStack::getCount).reduce(Integer::sum).orElse(0);
+                Optional<Item> item = BuiltInRegistries.ITEM.getOptional(rl);
+                if (item.isEmpty()) continue;
+                int newCount = items.stream().filter(stack -> stack.getItem().equals(item.get())).mapToInt(ItemStack::getCount).reduce(Integer::sum).orElse(0);
+                int oldCount = itemsBeforeFished.stream().filter(stack -> stack.getItem().equals(item.get())).mapToInt(ItemStack::getCount).reduce(Integer::sum).orElse(0);
                 int diff = newCount - oldCount;
-                for (int ii = 0; ii < diff; ii++) shouldDrop.add(item);
+                for (int ii = 0; ii < diff; ii++) shouldDrop.add(item.get());
             }
             itemsBeforeFished = null;
             if (shouldDrop.size() > 0) {

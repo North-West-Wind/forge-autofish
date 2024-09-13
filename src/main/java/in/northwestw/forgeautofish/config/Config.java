@@ -1,11 +1,14 @@
-package ml.northwestwind.forgeautofish.config;
+package in.northwestw.forgeautofish.config;
 
 import com.electronwill.nightconfig.core.file.CommentedFileConfig;
 import com.electronwill.nightconfig.core.io.WritingMode;
 import com.google.common.collect.Lists;
-import ml.northwestwind.forgeautofish.AutoFish;
-import ml.northwestwind.forgeautofish.handler.AutoFishHandler;
-import net.minecraftforge.common.ForgeConfigSpec;
+import in.northwestw.forgeautofish.AutoFish;
+import in.northwestw.forgeautofish.handler.AutoFishHandler;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.event.config.ModConfigEvent;
+import net.neoforged.neoforge.common.ModConfigSpec;
 
 import java.io.File;
 import java.util.List;
@@ -17,22 +20,16 @@ public class Config {
     public static final long[] THROW_DELAY_RANGE = { 10L, 5L, 600L };
     public static final long[] CHECK_INTERVAL_RANGE = { 200L, 20L, 72000L };
 
-    private static final ForgeConfigSpec.Builder CLIENT_BUILDER = new ForgeConfigSpec.Builder();
-    public static final ForgeConfigSpec CLIENT;
+    private static final ModConfigSpec.Builder CLIENT_BUILDER = new ModConfigSpec.Builder();
+    public static final ModConfigSpec CLIENT;
 
-    public static ForgeConfigSpec.LongValue RECAST_DELAY, REEL_IN_DELAY, THROW_DELAY, CHECK_INTERVAL;
-    public static ForgeConfigSpec.BooleanValue AUTO_FISH, ROD_PROTECT, AUTO_REPLACE, ALL_FILTERS;
-    public static ForgeConfigSpec.ConfigValue<List<String>> FILTER, PRIORITIZE;
+    public static ModConfigSpec.LongValue RECAST_DELAY, REEL_IN_DELAY, THROW_DELAY, CHECK_INTERVAL;
+    public static ModConfigSpec.BooleanValue AUTO_FISH, ROD_PROTECT, AUTO_REPLACE, ALL_FILTERS;
+    public static ModConfigSpec.ConfigValue<List<String>> FILTER, PRIORITIZE;
 
     static {
         init();
         CLIENT = CLIENT_BUILDER.build();
-    }
-
-    public static void loadConfig(String path) {
-        final CommentedFileConfig file = CommentedFileConfig.builder(new File(path)).sync().autosave().writingMode(WritingMode.REPLACE).build();
-        file.load();
-        CLIENT.setConfig(file);
     }
 
     public static void init() {
@@ -46,6 +43,10 @@ public class Config {
         ALL_FILTERS = CLIENT_BUILDER.comment("Toggles the entire item filter").define("forgeautofish.filter.all", true);
         FILTER = CLIENT_BUILDER.comment("Sets item filter").define("forgeautofish.filter.items", Lists.newArrayList("minecraft:rotten_flesh"));
         PRIORITIZE = CLIENT_BUILDER.comment("Puts these items to top of filter.").define("forgeautofish.filter.prioritize", Lists.newArrayList("minecraft:cod", "minecraft:salmon", "minecraft:tropical_fish", "minecraft:pufferfish", "minecraft:bow", "minecraft:enchanted_book", "minecraft:fishing_rod", "minecraft:name_tag", "minecraft:nautilus_shell", "minecraft:saddle", "minecraft:lily_pad", "minecraft:bowl", "minecraft:leather", "minecraft:leather_boots", "minecraft:rotten_flesh", "minecraft:stick", "minecraft:string", "minecraft:water_bottle", "minecraft:bone", "minecraft:ink_sac", "minecraft:tripwire_hook", "minecraft:bamboo", "minecraft:cocoa_beans"));
+    }
+
+    public static void onLoad(final ModConfigEvent event) {
+        AutoFishHandler.loadSettingsFromConfig();
     }
 
     public static void setRecastDelay(long recastDelay) {

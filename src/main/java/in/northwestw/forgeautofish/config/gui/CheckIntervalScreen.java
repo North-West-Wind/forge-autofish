@@ -1,8 +1,8 @@
-package ml.northwestwind.forgeautofish.config.gui;
+package in.northwestw.forgeautofish.config.gui;
 
-import ml.northwestwind.forgeautofish.AutoFish;
-import ml.northwestwind.forgeautofish.config.Config;
-import ml.northwestwind.forgeautofish.handler.AutoFishHandler;
+import in.northwestw.forgeautofish.AutoFish;
+import in.northwestw.forgeautofish.config.Config;
+import in.northwestw.forgeautofish.handler.AutoFishHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
@@ -12,33 +12,33 @@ import org.lwjgl.glfw.GLFW;
 
 import java.util.regex.Pattern;
 
-public class ThrowDelayScreen extends Screen {
+public class CheckIntervalScreen extends Screen {
     private final Screen parent;
-    private EditBox throwDelay;
+    private EditBox checkInterval;
 
-    protected ThrowDelayScreen(Screen parent) {
-        super(AutoFish.getTranslatableComponent("gui.setthrowdelay"));
+    protected CheckIntervalScreen(Screen parent) {
+        super(AutoFish.getTranslatableComponent("gui.setcheckinterval"));
         this.parent = parent;
     }
 
     @Override
     protected void init() {
-        throwDelay = new EditBox(this.font, this.width / 2 - 75, this.height / 2 - 25, 150, 20, AutoFish.getTranslatableComponent("gui.setthrowdelay.throwdelay")) {
+        checkInterval = new EditBox(this.font, this.width / 2 - 75, this.height / 2 - 25, 150, 20, AutoFish.getTranslatableComponent("gui.setcheckinterval.checkinterval")) {
             @Override
             public boolean mouseClicked(double mouseX, double mouseY, int button) {
                 if (button == GLFW.GLFW_MOUSE_BUTTON_2) this.setValue("");
                 return super.mouseClicked(mouseX, mouseY, button);
             }
         };
-        throwDelay.setValue(Long.toString(AutoFishHandler.throwDelay));
-        addRenderableWidget(throwDelay);
-        Button save = new Button.Builder(AutoFish.getTranslatableComponent("gui.setthrowdelay.save"), button -> {
-            if (!isNumeric(throwDelay.getValue())) throwDelay.setValue(Long.toString(AutoFishHandler.throwDelay));
+        checkInterval.setValue(Long.toString(AutoFishHandler.checkInterval));
+        addRenderableWidget(checkInterval);
+        Button save = new Button.Builder(AutoFish.getTranslatableComponent("gui.setcheckinterval.save"), button -> {
+            if (!isNumeric(checkInterval.getValue())) checkInterval.setValue(Long.toString(AutoFishHandler.checkInterval));
             else {
-                long delay = Long.parseLong(throwDelay.getValue());
-                if (delay < Config.THROW_DELAY_RANGE[1] || delay > Config.THROW_DELAY_RANGE[2]) throwDelay.setValue(Long.toString(AutoFishHandler.throwDelay));
+                long delay = Long.parseLong(checkInterval.getValue());
+                if (delay < Config.CHECK_INTERVAL_RANGE[1] || delay > Config.CHECK_INTERVAL_RANGE[2]) checkInterval.setValue(Long.toString(AutoFishHandler.checkInterval));
                 else {
-                    Config.setThrowDelay(delay);
+                    Config.setCheckInterval(delay);
                     Minecraft.getInstance().setScreen(parent);
                 }
             }
@@ -48,7 +48,7 @@ public class ThrowDelayScreen extends Screen {
 
     @Override
     public void tick() {
-        //throwDelay.tick();
+        //checkInterval.tick();
         super.tick();
     }
 
@@ -65,7 +65,7 @@ public class ThrowDelayScreen extends Screen {
         this.renderBackground(graphics, mouseX, mouseY, partialTicks);
         super.render(graphics, mouseX, mouseY, partialTicks);
         graphics.drawCenteredString(this.font, this.title, this.width / 2, 20, -1);
-        this.throwDelay.render(graphics, mouseX, mouseY, partialTicks);
+        this.checkInterval.render(graphics, mouseX, mouseY, partialTicks);
     }
 
     @Override

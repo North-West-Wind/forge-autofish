@@ -1,10 +1,9 @@
-package ml.northwestwind.forgeautofish.config.gui;
+package in.northwestw.forgeautofish.config.gui;
 
-import ml.northwestwind.forgeautofish.AutoFish;
+import in.northwestw.forgeautofish.AutoFish;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.StringWidget;
 import net.minecraft.client.gui.screens.Screen;
 
 public class SettingsScreen extends Screen {

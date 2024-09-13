@@ -1,18 +1,19 @@
-package ml.northwestwind.forgeautofish.config.gui;
+package in.northwestw.forgeautofish.config.gui;
 
 import com.google.common.collect.Lists;
-import ml.northwestwind.forgeautofish.AutoFish;
-import ml.northwestwind.forgeautofish.config.Config;
+import in.northwestw.forgeautofish.AutoFish;
+import in.northwestw.forgeautofish.config.Config;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.tags.IReverseTag;
 import org.lwjgl.glfw.GLFW;
 
 import java.awt.*;
@@ -24,9 +25,9 @@ import java.util.stream.Stream;
 public class FilterSelectionScreen extends Screen {
     private final Screen parent;
     private EditBox search;
-    private final Collection<Item> original = ForgeRegistries.ITEMS.getValues();
+    private final Collection<Item> original = BuiltInRegistries.ITEM.stream().toList();
     private Collection<Item> searching;
-    private final Set<Item> selected = new HashSet<>(Config.FILTER.get().stream().map(string -> ForgeRegistries.ITEMS.getValue(ResourceLocation.parse(string))).collect(Collectors.toList()));
+    private final Set<Item> selected = new HashSet<>(Config.FILTER.get().stream().map(string -> BuiltInRegistries.ITEM.getOptional(ResourceLocation.parse(string))).filter(Optional::isPresent).map(Optional::get).collect(Collectors.toList()));
     private int page, maxPage = (int) Math.ceil(original.size() / 300.0), max = 300;
     private boolean clickProcessed = true;
     private double clickX, clickY;
@@ -59,21 +60,17 @@ public class FilterSelectionScreen extends Screen {
             String[] tags = Arrays.stream(args).filter(s1 -> s1.startsWith("#")).toArray(String[]::new);
             String[] finalArgs = Arrays.stream(args).filter(s1 -> !s1.startsWith("@") && !s1.startsWith("#")).toArray(String[]::new);;
             searching = original.stream().filter(item -> {
-                ResourceLocation rl = ForgeRegistries.ITEMS.getKey(item);
+                ResourceLocation rl = BuiltInRegistries.ITEM.getKey(item);
                 boolean matchmod = mods.length < 1, matchtag = tags.length < 1, matcharg = finalArgs.length < 1;
                 for (String mod : mods) {
                     mod = mod.toLowerCase().substring(1);
-                    if (rl != null) matchmod = rl.getNamespace().toLowerCase().contains(mod);
+                    if (!rl.equals(BuiltInRegistries.ITEM.getDefaultKey())) matchmod = rl.getNamespace().toLowerCase().contains(mod);
                 }
-                Optional<IReverseTag<Item>> reverseTagsOptional = ForgeRegistries.ITEMS.tags().getReverseTag(item);
-                if (reverseTagsOptional.isPresent())
-                    for (String tag : tags) {
-                        String finalTag = tag.toLowerCase().substring(1);
-                        matchtag = reverseTagsOptional.get().getTagKeys().anyMatch(tagKey -> tagKey.location().getPath().contains(finalTag));
-                    }
+                for (String tag : tags)
+                    matchtag = BuiltInRegistries.ITEM.getOrCreateTag(TagKey.create(Registries.ITEM, ResourceLocation.parse(tag.toLowerCase().substring(1)))).stream().anyMatch(it -> it == item);
                 for (String arg : finalArgs) {
                     arg = arg.toLowerCase();
-                    if (rl != null) matcharg = rl.getPath().contains(arg) || item.getDescription().getString().contains(arg);
+                    if (!rl.equals(BuiltInRegistries.ITEM.getDefaultKey())) matcharg = rl.getPath().contains(arg) || item.getDescription().getString().contains(arg);
                 }
                 return matchmod && matchtag && matcharg;
             }).collect(Collectors.toList());
@@ -82,7 +79,7 @@ public class FilterSelectionScreen extends Screen {
         });
         addRenderableWidget(search);
         Button add = new Button.Builder(AutoFish.getTranslatableComponent("gui.filterselection.save"), button -> {
-            List<String> items = selected.stream().map(item -> Objects.requireNonNullElse(ForgeRegistries.ITEMS.getKey(item), item).toString()).collect(Collectors.toList());
+            List<String> items = selected.stream().map(item -> Objects.requireNonNullElse(BuiltInRegistries.ITEM.getKey(item), item).toString()).collect(Collectors.toList());
             Config.setFILTER(items);
             Minecraft.getInstance().setScreen(parent);
         }).pos(this.width / 2 - 75, 60).size(72, 20).build();
@@ -103,12 +100,12 @@ public class FilterSelectionScreen extends Screen {
         super.render(graphics, mouseX, mouseY, partialTicks);
         graphics.drawCenteredString(this.font, this.title, this.width / 2, 20, -1);Collection<Item> searchingCopy = Lists.newArrayList();
         Collection<Item> prioritized = searching.stream().filter(item -> {
-            ResourceLocation rl = ForgeRegistries.ITEMS.getKey(item);
-            if (rl == null) return false;
+            ResourceLocation rl = BuiltInRegistries.ITEM.getKey(item);
+            if (rl.equals(BuiltInRegistries.ITEM.getDefaultKey())) return false;
             boolean pri = Config.PRIORITIZE.get().contains(rl.toString());
             if (!pri) searchingCopy.add(item);
             return pri;
-        }).collect(Collectors.toList());
+        }).toList();
         Item[] items = Stream.concat(prioritized.stream(), searchingCopy.stream()).toArray(Item[]::new);
         if (items.length > 0 && page >= 0) {
             for (int i = page * max; i < Math.min((page + 1) * max, searching.size()); i++) {

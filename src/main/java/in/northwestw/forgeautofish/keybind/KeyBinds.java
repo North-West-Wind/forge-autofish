@@ -1,8 +1,8 @@
-package ml.northwestwind.forgeautofish.keybind;
+package in.northwestw.forgeautofish.keybind;
 
-import ml.northwestwind.forgeautofish.AutoFish;
+import in.northwestw.forgeautofish.AutoFish;
 import net.minecraft.client.KeyMapping;
-import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
+import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import org.lwjgl.glfw.GLFW;
 
 public class KeyBinds {
